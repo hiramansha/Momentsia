@@ -276,19 +276,22 @@ section { padding: 82px 7%; }
 .detail-back:hover {
   color: var(--gold);
 }
+
 .event-detail-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: stretch;
-  gap: 38px;
-  padding: clamp(18px, 4vw, 40px);
+  gap: 30px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: clamp(18px, 3vw, 32px);
   border: 1px solid var(--border);
   border-radius: 20px;
   background: white;
   box-shadow: var(--shadow);
   animation: rise .4s ease;
 }
-
 .event-detail-photo {
   position: relative;
   width: 100%;
