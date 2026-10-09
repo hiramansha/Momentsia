@@ -793,3 +793,27 @@ section { padding: 82px 7%; }
 #event-detail-view .event-detail-content {
   min-width: 0;
 }
+
+
+/* Momentsia event detail width fix */
+#event-detail-view {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+#event-detail-view .event-detail-layout {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 700px) {
+  #event-detail-view .event-detail-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
