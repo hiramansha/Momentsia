@@ -1,0 +1,82 @@
+
+@media (max-width: 1000px) {
+  .event-grid,.service-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+
+  .nav-links { gap: 16px; }
+
+  .event-detail-layout { gap: 24px; }
+  .event-detail-photo,.event-detail-photo img { height: 350px; min-height: 350px; }
+}
+
+@media (max-width: 760px) {
+  section { padding: 62px 5%; }
+
+  .site-header { min-height: 76px; padding: 12px 5%; }
+  .brand-name { font-size: 1.85rem; }
+
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 10px 5% 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--cream);
+    box-shadow: var(--shadow);
+  }
+
+  .nav-links.active { display: flex; }
+  .nav-links a { display: block; padding: 12px 0; }
+
+  .hero { min-height: 500px; }
+  .hero h1 { font-size: clamp(2.4rem,8vw,4rem); }
+
+  .event-detail-layout { grid-template-columns: 1fr; }
+  .event-detail-photo,.event-detail-photo img { height: 320px; min-height: 320px; }
+}
+
+@media (max-width: 540px) {
+  .welcome-screen { align-items: flex-start; padding: 28px 16px; }
+  .welcome-brand-name { font-size: clamp(3rem,15vw,4.4rem); }
+  .welcome-brand-byline { font-size: .58rem; letter-spacing: .28em; }
+  .welcome-content h1 { font-size: 2rem; }
+  .welcome-description { font-size: .88rem; }
+  .welcome-collage { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin: 20px 0; }
+  .welcome-collage img { height: 125px; border-radius: 65px 65px 7px 7px; }
+  .welcome-collage img:nth-child(even) { margin-top: 12px; }
+  .welcome-footer { font-size: .5rem; letter-spacing: .1em; }
+
+  .event-grid,.service-grid { grid-template-columns: 1fr; }
+  .event-image { min-height: 220px; }
+  .event-card-content,.service-card { padding: 21px; }
+
+  .event-categories { gap: 7px; }
+  .event-categories button { padding: 8px 12px; font-size: .78rem; }
+
+  .event-search { gap: 5px; }
+  .event-search .btn { padding: 10px 12px; }
+
+  .event-detail-layout { padding: 15px; }
+  .event-detail-photo,.event-detail-photo img { height: 250px; min-height: 250px; }
+
+  #booking-form,#contact-form { padding: 20px; }
+  .hero { padding-top: 60px; padding-bottom: 60px; }
+}
+
+@media (max-width: 360px) {
+  .welcome-brand-name { font-size: 2.8rem; }
+  .welcome-collage img { height: 105px; }
+  .event-search { flex-direction: column; }
+}
