@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const cards = [...document.querySelectorAll(".event-card")];
   const categoryButtons = [...document.querySelectorAll("#event-categories button")];
@@ -13,46 +14,87 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const eventData = {
     "Elegant Wedding Showcase": {
-      category: "WEDDING",
+      category: "Wedding",
       date: "November 15, 2026",
+      dateValue: "2026-11-15",
       location: "Lahore",
       price: "PKR 2,500 per person",
       image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=85",
       description: "Experience an elegant wedding celebration with beautiful décor, carefully planned arrangements and thoughtful details."
     },
     "Dream Birthday Experience": {
-      category: "BIRTHDAY",
+      category: "Birthday",
       date: "November 22, 2026",
+      dateValue: "2026-11-22",
       location: "Islamabad",
       price: "PKR 1,200 per person",
       image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=85",
-      description: "Celebrate a special day with a joyful atmosphere, charming decorations and a memorable birthday experience."
+      description: "Celebrate a special day with charming decorations, a joyful atmosphere and a memorable birthday experience."
     },
     "Under the Stars Concert": {
-      category: "MUSIC",
+      category: "Music",
       date: "December 5, 2026",
+      dateValue: "2026-12-05",
       location: "Lahore",
       price: "PKR 3,000 per person",
       image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=85",
-      description: "Enjoy an exciting live music experience with entertainment and a vibrant atmosphere under the stars."
+      description: "Enjoy live music, exciting entertainment and a vibrant concert atmosphere under the stars."
+    },
+    "Corporate Excellence Summit": {
+      category: "Corporate",
+      date: "December 12, 2026",
+      dateValue: "2026-12-12",
+      location: "Lahore",
+      price: "PKR 2,000 per person",
+      image: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=85",
+      description: "Discover a professional corporate event experience with thoughtful planning, networking opportunities and elegant arrangements."
+    },
+    "Future Leaders Conference": {
+      category: "Conference",
+      date: "December 20, 2026",
+      dateValue: "2026-12-20",
+      location: "Islamabad",
+      price: "PKR 1,800 per person",
+      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=85",
+      description: "Take part in an engaging conference featuring professional discussions, knowledge sharing and opportunities to connect."
     }
   };
+
+  function getCardTitle(card) {
+    return (
+      card.querySelector("h3")?.textContent.trim() ||
+      card.dataset.event ||
+      ""
+    );
+  }
+
+  function getCardCategory(card) {
+    return (card.dataset.category || "").toLowerCase();
+  }
 
   function filterEvents() {
     const query = (searchInput?.value || "").trim().toLowerCase();
     let visibleCount = 0;
 
     cards.forEach(card => {
-      const category = card.dataset.category || "";
-      const matchesCategory = activeCategory === "All" || category === activeCategory;
-      const matchesSearch = card.textContent.toLowerCase().includes(query);
+      const category = getCardCategory(card);
+      const searchableText = card.textContent.toLowerCase();
+      const matchesCategory =
+        activeCategory === "All" ||
+        category === activeCategory.toLowerCase() ||
+        category === activeCategory.toLowerCase().replace(/s$/, "");
+
+      const matchesSearch = searchableText.includes(query);
       const visible = matchesCategory && matchesSearch;
 
       card.hidden = !visible;
+
       if (visible) visibleCount++;
     });
 
-    if (emptyMessage) emptyMessage.hidden = visibleCount > 0;
+    if (emptyMessage) {
+      emptyMessage.hidden = visibleCount > 0;
+    }
 
     if (detailView) detailView.hidden = true;
     if (grid) grid.hidden = false;
@@ -62,7 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
   categoryButtons.forEach(button => {
     button.addEventListener("click", () => {
       activeCategory = button.dataset.category || "All";
-      categoryButtons.forEach(item => item.classList.toggle("active", item === button));
+
+      categoryButtons.forEach(item => {
+        item.classList.toggle("active", item === button);
+      });
+
       filterEvents();
     });
   });
@@ -70,15 +116,20 @@ document.addEventListener("DOMContentLoaded", () => {
   searchForm?.addEventListener("submit", event => {
     event.preventDefault();
     activeCategory = "All";
+
     categoryButtons.forEach(button => {
-      button.classList.toggle("active", button.dataset.category === "All");
+      button.classList.toggle(
+        "active",
+        button.dataset.category === "All"
+      );
     });
+
     filterEvents();
   });
 
   function openEvent(title) {
     const data = eventData[title];
-    if (!data) return;
+    if (!data || !grid || !categoryBar || !detailView) return;
 
     currentEvent = title;
 
@@ -90,24 +141,48 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("detail-price").textContent = data.price;
 
     const image = document.getElementById("detail-image");
-    image.src = data.image;
-    image.alt = title;
+    if (image) {
+      image.src = data.image;
+      image.alt = title;
+    }
+
+    cards.forEach(card => {
+      card.hidden = true;
+    });
+
+    if (emptyMessage) emptyMessage.hidden = true;
 
     grid.hidden = true;
     categoryBar.hidden = true;
-    emptyMessage.hidden = true;
     detailView.hidden = false;
-    detailView.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    detailView.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
   }
 
+  cards.forEach(card => {
+    const title = getCardTitle(card);
+
+    card.addEventListener("click", event => {
+      if (event.target.closest(".book-event")) return;
+      openEvent(title);
+    });
+  });
+
   document.querySelectorAll(".book-event").forEach(button => {
-    button.addEventListener("click", () => openEvent(button.dataset.event));
+    button.addEventListener("click", event => {
+      event.stopPropagation();
+      openEvent(button.dataset.event || button.closest(".event-card")?.querySelector("h3")?.textContent.trim());
+    });
   });
 
   document.getElementById("detail-back")?.addEventListener("click", () => {
-    detailView.hidden = true;
-    grid.hidden = false;
-    categoryBar.hidden = false;
+    if (detailView) detailView.hidden = true;
+    if (grid) grid.hidden = false;
+    if (categoryBar) categoryBar.hidden = false;
+
     filterEvents();
   });
 
@@ -117,22 +192,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const typeSelect = document.getElementById("booking-type");
     const dateInput = document.getElementById("booking-date");
-    const eventType = data.category.charAt(0) + data.category.slice(1).toLowerCase();
 
     if (typeSelect) {
       const matchingOption = [...typeSelect.options].find(option =>
-        option.value.toLowerCase() === eventType.toLowerCase()
+        option.value.toLowerCase().includes(data.category.toLowerCase()) ||
+        data.category.toLowerCase().includes(option.value.toLowerCase())
       );
-      if (matchingOption) typeSelect.value = matchingOption.value;
+
+      if (matchingOption) {
+        typeSelect.value = matchingOption.value;
+      }
     }
 
     if (dateInput) {
-      const dateMap = {
-        "Elegant Wedding Showcase": "2026-11-15",
-        "Dream Birthday Experience": "2026-11-22",
-        "Under the Stars Concert": "2026-12-05"
-      };
-      dateInput.value = dateMap[currentEvent] || "";
+      dateInput.value = data.dateValue;
     }
 
     document.querySelector('.nav-links a[href="#booking"]')?.click();
