@@ -570,3 +570,28 @@ section { padding: 82px 7%; }
     height: 260px;
   }
 }
+
+
+/* Corporate and Conference Event Images */
+.event-image {
+    width: 100%;
+    height: 240px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.corporate-image {
+    background-image: url("https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1000&q=85");
+}
+
+.conference-image {
+    background-image: url("https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1000&q=85");
+}
+
+@media (max-width: 700px) {
+    .event-image {
+        height: 220px;
+    }
+}
