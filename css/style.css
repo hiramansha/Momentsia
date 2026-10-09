@@ -247,17 +247,23 @@ section { padding: 82px 7%; }
 .event-card .btn { margin-top: 10px; }
 #event-empty { padding: 25px; color: var(--muted); text-align: center; }
 
+
 /* EVENT DETAIL */
 
-.event-detail-view { margin: 10px 0 32px; }
-.event-detail-view[hidden] { display: none !important; }
+.event-detail-view {
+  margin: 10px 0 32px;
+}
+
+.event-detail-view[hidden] {
+  display: none !important;
+}
 
 .detail-back {
   display: inline-flex;
   align-items: center;
-  margin-top: 16px;
+  margin-top: 12px;
   margin-bottom: 8px;
-  padding: 6px 10px;
+  padding: 5px 8px;
   border: 0;
   border-radius: 6px;
   background: transparent;
@@ -270,7 +276,6 @@ section { padding: 82px 7%; }
 .detail-back:hover {
   color: var(--gold);
 }
-
 .event-detail-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
