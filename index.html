@@ -86,124 +86,134 @@
       </div>
     </section>
 
-    <!-- EVENTS -->
-    <section id="events" class="page-section section-hidden">
-      <div class="section-heading">
-        <p class="eyebrow">CURATED FOR YOU</p>
-        <h2>Explore Our Events</h2>
-        <p>Find the perfect experience for your next special occasion.</p>
+    
+<!-- EVENTS -->
+<section id="events" class="page-section section-hidden">
+  <div class="section-heading">
+    <p class="eyebrow">CURATED FOR YOU</p>
+    <h2>Explore Our Events</h2>
+    <p>Find the perfect experience for your next special occasion.</p>
+  </div>
+
+  <div id="event-categories" class="event-categories">
+    <button type="button" class="active" data-category="All">All Events</button>
+    <button type="button" data-category="Wedding">Weddings</button>
+    <button type="button" data-category="Birthday">Birthdays</button>
+    <button type="button" data-category="Music">Music</button>
+    <button type="button" data-category="Corporate">Corporate</button>
+    <button type="button" data-category="Conference">Conferences</button>
+  </div>
+
+  <div class="event-detail-view" id="event-detail-view" hidden>
+    <button type="button" class="detail-back" id="detail-back">← Back to all events</button>
+
+    <div class="event-detail-layout">
+      <div class="event-detail-photo">
+        <img id="detail-image" src="" alt="Selected event">
+        <span class="detail-photo-label">A MOMENTSIA EXPERIENCE</span>
       </div>
 
-      <div id="event-categories" class="event-categories">
-        <button type="button" class="active" data-category="All">All Events</button>
-        <button type="button" data-category="Wedding">Weddings</button>
-        <button type="button" data-category="Birthday">Birthdays</button>
-        <button type="button" data-category="Music">Music</button>
-        <button type="button" data-category="Corporate">Corporate</button>
-        <button type="button" data-category="Conference">Conferences</button>
-      </div>
+      <div class="event-detail-content">
+        <p class="eyebrow" id="detail-category">EXCLUSIVE EXPERIENCE</p>
+        <h2 id="detail-title">Your Special Event</h2>
+        <p id="detail-description"></p>
 
-      <div class="event-detail-view" id="event-detail-view" hidden>
-        <button type="button" class="detail-back" id="detail-back">← Back to all events</button>
-        <div class="event-detail-layout">
-          <div class="event-detail-photo">
-            <img id="detail-image" src="" alt="Selected event">
-            <span class="detail-photo-label">A MOMENTSIA EXPERIENCE</span>
+        <div class="detail-information">
+          <div class="detail-item">
+            <span>EVENT DATE</span>
+            <strong id="detail-date"></strong>
           </div>
-          <div class="event-detail-content">
-            <p class="eyebrow" id="detail-category">EXCLUSIVE EXPERIENCE</p>
-            <h2 id="detail-title">Your Special Event</h2>
-            <p id="detail-description"></p>
-            <div class="detail-information">
-              <div class="detail-item"><span>EVENT DATE</span><strong id="detail-date"></strong></div>
-              <div class="detail-item"><span>LOCATION</span><strong id="detail-location"></strong></div>
-              <div class="detail-item"><span>EXPERIENCE PRICE</span><strong id="detail-price"></strong></div>
-            </div>
-            <button type="button" class="btn" id="detail-book">Book This Event ↗</button>
+          <div class="detail-item">
+            <span>LOCATION</span>
+            <strong id="detail-location"></strong>
+          </div>
+          <div class="detail-item">
+            <span>EXPERIENCE PRICE</span>
+            <strong id="detail-price"></strong>
           </div>
         </div>
+
+        <button type="button" class="btn" id="detail-book">Book This Event ↗</button>
       </div>
-
-      <div class="event-grid" id="event-grid">
-        <article class="event-card" data-category="Wedding">
-          <div class="event-image wedding-image" role="img" aria-label="Wedding venue"></div>
-          <div class="event-card-content">
-            <span class="event-category-label">WEDDING</span>
-            <h3>Elegant Wedding Showcase</h3>
-            <p>A graceful celebration with beautiful décor and thoughtful details.</p>
-            <p><strong>Location:</strong> Lahore</p>
-            <p><strong>Date:</strong> Nov 15, 2026</p>
-            <p><strong>Price:</strong> PKR 2,500 / person</p>
-            <button type="button" class="btn book-event" data-event="Elegant Wedding Showcase">Explore Event ↗</button>
-          </div>
-        </article>
-
-        <article class="event-card" data-category="Birthday">
-          <div class="event-image birthday-image" role="img" aria-label="Birthday celebration"></div>
-          <div class="event-card-content">
-            <span class="event-category-label">BIRTHDAY</span>
-            <h3>Dream Birthday Experience</h3>
-            <p>Celebrate with charming decorations and unforgettable moments.</p>
-            <p><strong>Location:</strong> Islamabad</p>
-            <p><strong>Date:</strong> Nov 22, 2026</p>
-            <p><strong>Price:</strong> PKR 1,200 / person</p>
-            <button type="button" class="btn book-event" data-event="Dream Birthday Experience">Explore Event ↗</button>
-          </div>
-        </article>
-
-        <article class="event-card" data-category="Music">
-          <div class="event-image music-image" role="img" aria-label="Music concert"></div>
-          <div class="event-card-content">
-            <span class="event-category-label">MUSIC</span>
-            <h3>Under the Stars Concert</h3>
-            <p>Enjoy live music, a wonderful atmosphere and great entertainment.</p>
-            <p><strong>Location:</strong> Lahore</p>
-            <p><strong>Date:</strong> Dec 05, 2026</p>
-            <p><strong>Price:</strong> PKR 3,000 / person</p>
-            <button type="button" class="btn book-event" data-event="Under the Stars Concert">Explore Event ↗</button>
-          </div>
-        </article>
-      </div> 
-<!-- Corporate Event -->
-<article class="event-card" data-category="Corporate">
-  <img
-    src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=85"
-    alt="Corporate event and networking"
-    loading="lazy"
-  />
-  <div class="event-card-content">
-    <span class="event-category">Corporate</span>
-    <h3>Corporate Excellence Summit</h3>
-    <p>Professional networking and elegant corporate event planning.</p>
-    <p><strong>December 12, 2026</strong> · Lahore</p>
-    <p class="event-price">PKR 2,000 per person</p>
-    <button class="book-event" data-event="Corporate Excellence Summit" type="button">
-      View Details
-    </button>
+    </div>
   </div>
-</article>
 
-<!-- Conference Event -->
-<article class="event-card" data-category="Conference">
-  <img
-    src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=85"
-    alt="Conference with audience and stage"
-    loading="lazy"
-  />
-  <div class="event-card-content">
-    <span class="event-category">Conference</span>
-    <h3>Future Leaders Conference</h3>
-    <p>Knowledge sharing, professional discussions and networking.</p>
-    <p><strong>December 20, 2026</strong> · Islamabad</p>
-    <p class="event-price">PKR 1,800 per person</p>
-    <button class="book-event" data-event="Future Leaders Conference" type="button">
-      View Details
-    </button>
+  <div class="event-grid" id="event-grid">
+
+    <!-- Wedding Event -->
+    <article class="event-card" data-category="Wedding">
+      <div class="event-image wedding-image" role="img" aria-label="Wedding venue"></div>
+      <div class="event-card-content">
+        <span class="event-category-label">WEDDING</span>
+        <h3>Elegant Wedding Showcase</h3>
+        <p>A graceful celebration with beautiful décor and thoughtful details.</p>
+        <p><strong>Location:</strong> Lahore</p>
+        <p><strong>Date:</strong> Nov 15, 2026</p>
+        <p><strong>Price:</strong> PKR 2,500 / person</p>
+        <button type="button" class="btn book-event" data-event="Elegant Wedding Showcase">Explore Event ↗</button>
+      </div>
+    </article>
+
+    <!-- Birthday Event -->
+    <article class="event-card" data-category="Birthday">
+      <div class="event-image birthday-image" role="img" aria-label="Birthday celebration"></div>
+      <div class="event-card-content">
+        <span class="event-category-label">BIRTHDAY</span>
+        <h3>Dream Birthday Experience</h3>
+        <p>Celebrate with charming decorations and unforgettable moments.</p>
+        <p><strong>Location:</strong> Islamabad</p>
+        <p><strong>Date:</strong> Nov 22, 2026</p>
+        <p><strong>Price:</strong> PKR 1,200 / person</p>
+        <button type="button" class="btn book-event" data-event="Dream Birthday Experience">Explore Event ↗</button>
+      </div>
+    </article>
+
+    <!-- Music Event -->
+    <article class="event-card" data-category="Music">
+      <div class="event-image music-image" role="img" aria-label="Music concert"></div>
+      <div class="event-card-content">
+        <span class="event-category-label">MUSIC</span>
+        <h3>Under the Stars Concert</h3>
+        <p>Enjoy live music, a wonderful atmosphere and great entertainment.</p>
+        <p><strong>Location:</strong> Lahore</p>
+        <p><strong>Date:</strong> Dec 05, 2026</p>
+        <p><strong>Price:</strong> PKR 3,000 / person</p>
+        <button type="button" class="btn book-event" data-event="Under the Stars Concert">Explore Event ↗</button>
+      </div>
+    </article>
+
+    <!-- Corporate Event -->
+    <article class="event-card" data-category="Corporate">
+      <div class="event-image corporate-image" role="img" aria-label="Corporate event and networking"></div>
+      <div class="event-card-content">
+        <span class="event-category-label">CORPORATE</span>
+        <h3>Corporate Excellence Summit</h3>
+        <p>Professional networking and elegant corporate event planning.</p>
+        <p><strong>Location:</strong> Lahore</p>
+        <p><strong>Date:</strong> Dec 12, 2026</p>
+        <p><strong>Price:</strong> PKR 2,000 / person</p>
+        <button type="button" class="btn book-event" data-event="Corporate Excellence Summit">Explore Event ↗</button>
+      </div>
+    </article>
+
+    <!-- Conference Event -->
+    <article class="event-card" data-category="Conference">
+      <div class="event-image conference-image" role="img" aria-label="Conference with audience and stage"></div>
+      <div class="event-card-content">
+        <span class="event-category-label">CONFERENCE</span>
+        <h3>Future Leaders Conference</h3>
+        <p>Knowledge sharing, professional discussions and networking.</p>
+        <p><strong>Location:</strong> Islamabad</p>
+        <p><strong>Date:</strong> Dec 20, 2026</p>
+        <p><strong>Price:</strong> PKR 1,800 / person</p>
+        <button type="button" class="btn book-event" data-event="Future Leaders Conference">Explore Event ↗</button>
+      </div>
+    </article>
+
   </div>
-</article>
 
-      <p id="event-empty" hidden>No events found. Try another category or search.</p>
-    </section>
+  <p id="event-empty" hidden>No events found. Try another category or search.</p>
+</section>
 
     <!-- SERVICES -->
     <section id="services" class="page-section section-hidden">
