@@ -817,3 +817,63 @@ section { padding: 82px 7%; }
     grid-template-columns: 1fr !important;
   }
 }
+
+/* FIX: MOMENTSIA EVENT DETAILS PAGE */
+
+#event-detail-view:not([hidden]) {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 20px 0 32px !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+#event-detail-view .event-detail-layout {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  gap: 30px !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 28px !important;
+  box-sizing: border-box !important;
+}
+
+#event-detail-view .event-detail-photo {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 420px !important;
+  overflow: hidden !important;
+}
+
+#event-detail-view .event-detail-photo img,
+#event-detail-view #detail-image {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+#event-detail-view .event-detail-content {
+  min-width: 0 !important;
+  align-self: center !important;
+}
+
+#event-detail-view .detail-back {
+  display: inline-flex !important;
+  margin-top: 15px !important;
+}
+
+@media (max-width: 700px) {
+  #event-detail-view .event-detail-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 20px !important;
+    padding: 16px !important;
+  }
+
+  #event-detail-view .event-detail-photo {
+    height: 280px !important;
+  }
+}
