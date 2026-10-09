@@ -250,8 +250,12 @@ section { padding: 82px 7%; }
 
 /* EVENT DETAIL */
 
+
 .event-detail-view {
+  width: 100%;
+  max-width: 100%;
   margin: 10px 0 32px;
+  box-sizing: border-box;
 }
 
 .event-detail-view[hidden] {
@@ -768,4 +772,24 @@ section { padding: 82px 7%; }
   #event-grid .event-card .event-image {
     height: 220px;
   }
+}
+
+
+/* Fix event details full width */
+#event-detail-view {
+  display: block;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+#event-detail-view .event-detail-layout {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+#event-detail-view .event-detail-photo,
+#event-detail-view .event-detail-content {
+  min-width: 0;
 }
