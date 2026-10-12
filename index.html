@@ -6,18 +6,21 @@
   <meta name="theme-color" content="#F8F0E5">
   <meta name="description" content="Momentsia by Hira Mansha — weddings, birthdays, corporate events and memorable celebrations.">
   <title>Momentsia | By Hira Mansha</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
+
 <body>
 
   <!-- WELCOME SCREEN -->
   <div class="welcome-screen" id="welcome-screen">
     <div class="welcome-content">
       <p class="welcome-kicker">THE ART OF CELEBRATION</p>
+
       <div class="welcome-brand">
         <span class="welcome-brand-name">Momentsia</span>
         <span class="welcome-brand-line"></span>
@@ -25,6 +28,7 @@
       </div>
 
       <h1>Your Moments.<span>Our Masterpiece.</span></h1>
+
       <p class="welcome-description">
         Discover beautiful celebrations, extraordinary experiences
         and moments that stay with you forever.
@@ -40,6 +44,7 @@
       <button class="welcome-button" id="welcome-explore" type="button">
         Explore Momentsia <span>↗</span>
       </button>
+
       <p class="welcome-footer">MADE FOR YOUR MOST BEAUTIFUL MOMENTS</p>
     </div>
   </div>
@@ -66,16 +71,20 @@
   </header>
 
   <main>
+
     <!-- HOME -->
     <section class="hero page-section" id="home">
       <div class="hero-content">
         <p class="eyebrow">EXPERIENCES WORTH REMEMBERING</p>
+
         <h1>Every Celebration<br>Tells a Beautiful Story.</h1>
+
         <p>
           From intimate gatherings to grand celebrations, Momentsia
           brings your ideas to life with thoughtful planning,
           elegant details and unforgettable experiences.
         </p>
+
         <a href="#events" class="btn">Discover Our Events ↗</a>
 
         <form class="event-search" id="event-search" role="search">
@@ -86,135 +95,151 @@
       </div>
     </section>
 
-    
-<!-- EVENTS -->
-<section id="events" class="page-section section-hidden">
-  <div class="section-heading">
-    <p class="eyebrow">CURATED FOR YOU</p>
-    <h2>Explore Our Events</h2>
-    <p>Find the perfect experience for your next special occasion.</p>
-  </div>
-
-  <div id="event-categories" class="event-categories">
-    <button type="button" class="active" data-category="All">All Events</button>
-    <button type="button" data-category="Wedding">Weddings</button>
-    <button type="button" data-category="Birthday">Birthdays</button>
-    <button type="button" data-category="Music">Music</button>
-    <button type="button" data-category="Corporate">Corporate</button>
-    <button type="button" data-category="Conference">Conferences</button>
-  </div>
-
-  <div class="event-detail-view" id="event-detail-view" hidden>
-    <div class="event-detail-layout">
-      <div class="event-detail-photo">
-        <img id="detail-image" src="" alt="Selected event">
-        <span class="detail-photo-label">A MOMENTSIA EXPERIENCE</span>
+    <!-- EVENTS -->
+    <section id="events" class="page-section section-hidden">
+      <div class="section-heading">
+        <p class="eyebrow">CURATED FOR YOU</p>
+        <h2>Explore Our Events</h2>
+        <p>Find the perfect experience for your next special occasion.</p>
       </div>
 
-      <div class="event-detail-content">
-        <p class="eyebrow" id="detail-category">EXCLUSIVE EXPERIENCE</p>
-        <h2 id="detail-title">Your Special Event</h2>
-        <p id="detail-description"></p>
+      <div id="event-categories" class="event-categories">
+        <button type="button" class="active" data-category="All">All Events</button>
+        <button type="button" data-category="Wedding">Weddings</button>
+        <button type="button" data-category="Birthday">Birthdays</button>
+        <button type="button" data-category="Music">Music</button>
+        <button type="button" data-category="Corporate">Corporate</button>
+        <button type="button" data-category="Conference">Conferences</button>
+      </div>
 
-        <div class="detail-information">
-          <div class="detail-item">
-            <span>EVENT DATE</span>
-            <strong id="detail-date"></strong>
+      <!-- EVENT DETAILS -->
+      <div class="event-detail-view" id="event-detail-view" hidden>
+        <div class="event-detail-layout">
+          <div class="event-detail-photo">
+            <img id="detail-image" src="" alt="Selected event">
+            <span class="detail-photo-label">A MOMENTSIA EXPERIENCE</span>
           </div>
-          <div class="detail-item">
-            <span>LOCATION</span>
-            <strong id="detail-location"></strong>
-          </div>
-          <div class="detail-item">
-            <span>EXPERIENCE PRICE</span>
-            <strong id="detail-price"></strong>
+
+          <div class="event-detail-content">
+            <p class="eyebrow" id="detail-category">EXCLUSIVE EXPERIENCE</p>
+            <h2 id="detail-title">Your Special Event</h2>
+            <p id="detail-description"></p>
+
+            <div class="detail-information">
+              <div class="detail-item">
+                <span>EVENT DATE</span>
+                <strong id="detail-date"></strong>
+              </div>
+
+              <div class="detail-item">
+                <span>LOCATION</span>
+                <strong id="detail-location"></strong>
+              </div>
+
+              <div class="detail-item">
+                <span>EXPERIENCE PRICE</span>
+                <strong id="detail-price"></strong>
+              </div>
+            </div>
+
+            <button type="button" class="btn" id="detail-book">
+              Book This Event ↗
+            </button>
           </div>
         </div>
 
-        <button type="button" class="btn" id="detail-book">Book This Event ↗</button>
+        <button type="button" class="detail-back" id="detail-back">
+          ← Back to all events
+        </button>
       </div>
-    </div>
-    <button type="button" class="detail-back" id="detail-back">
-      ← Back to all events
-    </button>
-  </div>
 
-  <div class="event-grid" id="event-grid">
+      <!-- EVENT CARDS -->
+      <div class="event-grid" id="event-grid">
 
-    <!-- Wedding Event -->
-    <article class="event-card" data-category="Wedding">
-      <div class="event-image wedding-image" role="img" aria-label="Wedding venue"></div>
-      <div class="event-card-content">
-        <span class="event-category-label">WEDDING</span>
-        <h3>Elegant Wedding Showcase</h3>
-        <p>A graceful celebration with beautiful décor and thoughtful details.</p>
-        <p><strong>Location:</strong> Lahore</p>
-        <p><strong>Date:</strong> Nov 15, 2026</p>
-        <p><strong>Price:</strong> PKR 2,500 / person</p>
-        <button type="button" class="btn book-event" data-event="Elegant Wedding Showcase">Explore Event ↗</button>
+        <article class="event-card" data-category="Wedding">
+          <div class="event-image wedding-image" role="img" aria-label="Wedding venue"></div>
+
+          <div class="event-card-content">
+            <span class="event-category-label">WEDDING</span>
+            <h3>Elegant Wedding Showcase</h3>
+            <p>A graceful celebration with beautiful décor and thoughtful details.</p>
+            <p><strong>Location:</strong> Lahore</p>
+            <p><strong>Date:</strong> Nov 15, 2026</p>
+            <p><strong>Price:</strong> PKR 2,500 / person</p>
+            <button type="button" class="btn book-event" data-event="Elegant Wedding Showcase">
+              Explore Event ↗
+            </button>
+          </div>
+        </article>
+
+        <article class="event-card" data-category="Birthday">
+          <div class="event-image birthday-image" role="img" aria-label="Birthday celebration"></div>
+
+          <div class="event-card-content">
+            <span class="event-category-label">BIRTHDAY</span>
+            <h3>Dream Birthday Experience</h3>
+            <p>Celebrate with charming decorations and unforgettable moments.</p>
+            <p><strong>Location:</strong> Islamabad</p>
+            <p><strong>Date:</strong> Nov 22, 2026</p>
+            <p><strong>Price:</strong> PKR 1,200 / person</p>
+            <button type="button" class="btn book-event" data-event="Dream Birthday Experience">
+              Explore Event ↗
+            </button>
+          </div>
+        </article>
+
+        <article class="event-card" data-category="Music">
+          <div class="event-image music-image" role="img" aria-label="Music concert"></div>
+
+          <div class="event-card-content">
+            <span class="event-category-label">MUSIC</span>
+            <h3>Under the Stars Concert</h3>
+            <p>Enjoy live music, a wonderful atmosphere and great entertainment.</p>
+            <p><strong>Location:</strong> Lahore</p>
+            <p><strong>Date:</strong> Dec 05, 2026</p>
+            <p><strong>Price:</strong> PKR 3,000 / person</p>
+            <button type="button" class="btn book-event" data-event="Under the Stars Concert">
+              Explore Event ↗
+            </button>
+          </div>
+        </article>
+
+        <article class="event-card" data-category="Corporate">
+          <div class="event-image corporate-image" role="img" aria-label="Corporate event and networking"></div>
+
+          <div class="event-card-content">
+            <span class="event-category-label">CORPORATE</span>
+            <h3>Corporate Excellence Summit</h3>
+            <p>Professional networking and elegant corporate event planning.</p>
+            <p><strong>Location:</strong> Lahore</p>
+            <p><strong>Date:</strong> Dec 12, 2026</p>
+            <p><strong>Price:</strong> PKR 2,000 / person</p>
+            <button type="button" class="btn book-event" data-event="Corporate Excellence Summit">
+              Explore Event ↗
+            </button>
+          </div>
+        </article>
+
+        <article class="event-card" data-category="Conference">
+          <div class="event-image conference-image" role="img" aria-label="Conference with audience and stage"></div>
+
+          <div class="event-card-content">
+            <span class="event-category-label">CONFERENCE</span>
+            <h3>Future Leaders Conference</h3>
+            <p>Knowledge sharing, professional discussions and networking.</p>
+            <p><strong>Location:</strong> Islamabad</p>
+            <p><strong>Date:</strong> Dec 20, 2026</p>
+            <p><strong>Price:</strong> PKR 1,800 / person</p>
+            <button type="button" class="btn book-event" data-event="Future Leaders Conference">
+              Explore Event ↗
+            </button>
+          </div>
+        </article>
+
       </div>
-    </article>
 
-    <!-- Birthday Event -->
-    <article class="event-card" data-category="Birthday">
-      <div class="event-image birthday-image" role="img" aria-label="Birthday celebration"></div>
-      <div class="event-card-content">
-        <span class="event-category-label">BIRTHDAY</span>
-        <h3>Dream Birthday Experience</h3>
-        <p>Celebrate with charming decorations and unforgettable moments.</p>
-        <p><strong>Location:</strong> Islamabad</p>
-        <p><strong>Date:</strong> Nov 22, 2026</p>
-        <p><strong>Price:</strong> PKR 1,200 / person</p>
-        <button type="button" class="btn book-event" data-event="Dream Birthday Experience">Explore Event ↗</button>
-      </div>
-    </article>
-
-    <!-- Music Event -->
-    <article class="event-card" data-category="Music">
-      <div class="event-image music-image" role="img" aria-label="Music concert"></div>
-      <div class="event-card-content">
-        <span class="event-category-label">MUSIC</span>
-        <h3>Under the Stars Concert</h3>
-        <p>Enjoy live music, a wonderful atmosphere and great entertainment.</p>
-        <p><strong>Location:</strong> Lahore</p>
-        <p><strong>Date:</strong> Dec 05, 2026</p>
-        <p><strong>Price:</strong> PKR 3,000 / person</p>
-        <button type="button" class="btn book-event" data-event="Under the Stars Concert">Explore Event ↗</button>
-      </div>
-    </article>
-
-    <!-- Corporate Event -->
-    <article class="event-card" data-category="Corporate">
-      <div class="event-image corporate-image" role="img" aria-label="Corporate event and networking"></div>
-      <div class="event-card-content">
-        <span class="event-category-label">CORPORATE</span>
-        <h3>Corporate Excellence Summit</h3>
-        <p>Professional networking and elegant corporate event planning.</p>
-        <p><strong>Location:</strong> Lahore</p>
-        <p><strong>Date:</strong> Dec 12, 2026</p>
-        <p><strong>Price:</strong> PKR 2,000 / person</p>
-        <button type="button" class="btn book-event" data-event="Corporate Excellence Summit">Explore Event ↗</button>
-      </div>
-    </article>
-
-    <!-- Conference Event -->
-    <article class="event-card" data-category="Conference">
-      <div class="event-image conference-image" role="img" aria-label="Conference with audience and stage"></div>
-      <div class="event-card-content">
-        <span class="event-category-label">CONFERENCE</span>
-        <h3>Future Leaders Conference</h3>
-        <p>Knowledge sharing, professional discussions and networking.</p>
-        <p><strong>Location:</strong> Islamabad</p>
-        <p><strong>Date:</strong> Dec 20, 2026</p>
-        <p><strong>Price:</strong> PKR 1,800 / person</p>
-        <button type="button" class="btn book-event" data-event="Future Leaders Conference">Explore Event ↗</button>
-      </div>
-    </article>
-
-  </div>
-
-  <p id="event-empty" hidden>No events found. Try another category or search.</p>
-</section>
+      <p id="event-empty" hidden>No events found. Try another category or search.</p>
+    </section>
 
     <!-- SERVICES -->
     <section id="services" class="page-section section-hidden">
@@ -230,26 +255,31 @@
           <p>Elegant concepts, venue coordination and memorable celebrations.</p>
           <a href="#booking" class="service-link" data-service="Wedding">Plan Your Wedding ↗</a>
         </article>
+
         <article class="service-card">
           <h3>Birthday Celebrations</h3>
           <p>Personalised themes, beautiful decorations and joyful experiences.</p>
           <a href="#booking" class="service-link" data-service="Birthday">Celebrate With Us ↗</a>
         </article>
+
         <article class="service-card">
           <h3>Corporate Events</h3>
           <p>Professional planning for conferences, launches and business gatherings.</p>
           <a href="#booking" class="service-link" data-service="Corporate">Plan a Business Event ↗</a>
         </article>
+
         <article class="service-card">
-          <h3>Concerts & Entertainment</h3>
+          <h3>Concerts &amp; Entertainment</h3>
           <p>Engaging entertainment experiences and event coordination.</p>
           <a href="#booking" class="service-link" data-service="Music">Explore Experiences ↗</a>
         </article>
+
         <article class="service-card">
-          <h3>Venue & Décor</h3>
+          <h3>Venue &amp; Décor</h3>
           <p>Thoughtfully selected venues and coordinated event styling.</p>
           <a href="#booking" class="service-link" data-service="Other">Discuss Your Ideas ↗</a>
         </article>
+
         <article class="service-card">
           <h3>Private Gatherings</h3>
           <p>Beautifully arranged family occasions and intimate celebrations.</p>
@@ -263,15 +293,18 @@
       <div class="section-heading about-content">
         <p class="eyebrow">OUR PHILOSOPHY</p>
         <h2>Moments Made Meaningful</h2>
+
         <p>
           Momentsia by Hira Mansha celebrates the beauty of bringing people
           together. We believe every occasion deserves thoughtful planning,
           beautiful details and a personal touch.
         </p>
+
         <p>
           From the first idea to the final detail, our aim is to make every
           celebration feel special, seamless and memorable.
         </p>
+
         <a href="#booking" class="btn">Plan Your Celebration ↗</a>
       </div>
     </section>
@@ -285,33 +318,107 @@
       </div>
 
       <form id="booking-form">
+
         <label for="customer-name">Full Name
-          <input type="text" id="customer-name" name="name" autocomplete="name" required>
+          <input
+            type="text"
+            id="customer-name"
+            name="name"
+            autocomplete="name"
+            required
+          >
         </label>
+
         <label for="customer-email">Email Address
-          <input type="email" id="customer-email" name="email" autocomplete="email" required>
+          <input
+            type="email"
+            id="customer-email"
+            name="email"
+            autocomplete="email"
+            required
+          >
         </label>
+
         <label for="booking-type">Event Type
           <select id="booking-type" name="eventType" required>
             <option value="">Select your event</option>
             <option value="Wedding">Wedding</option>
             <option value="Birthday">Birthday</option>
-            <option value="Music">Music & Entertainment</option>
+            <option value="Music">Music &amp; Entertainment</option>
             <option value="Corporate">Corporate Event</option>
             <option value="Conference">Conference</option>
             <option value="Private Gathering">Private Gathering</option>
             <option value="Other">Other</option>
           </select>
         </label>
+
+        <label for="booking-venue">Select Venue
+          <select id="booking-venue" name="venue" required>
+            <option value="">Choose your venue</option>
+            <option value="Luxury Banquet Hall">Luxury Banquet Hall</option>
+            <option value="Outdoor Garden">Outdoor Garden</option>
+            <option value="Rooftop Venue">Rooftop Venue</option>
+            <option value="Elegant Marquee">Elegant Marquee</option>
+            <option value="Hotel Ballroom">Hotel Ballroom</option>
+            <option value="Conference Hall">Conference Hall</option>
+            <option value="Private Event Space">Private Event Space</option>
+          </select>
+        </label>
+
+        <label for="booking-theme">Select Theme
+          <select id="booking-theme" name="theme" required>
+            <option value="">Choose your theme</option>
+            <option value="Royal Gold">Royal Gold</option>
+            <option value="Floral Romance">Floral Romance</option>
+            <option value="Pastel Dream">Pastel Dream</option>
+            <option value="Modern Minimalist">Modern Minimalist</option>
+            <option value="Traditional Pakistani">Traditional Pakistani</option>
+            <option value="Fairy Lights">Fairy Lights</option>
+            <option value="Black and White">Black &amp; White</option>
+          </select>
+        </label>
+
+        <label for="booking-menu">Select Menu
+          <select id="booking-menu" name="menu" required>
+            <option value="">Choose your menu</option>
+            <option value="Pakistani Cuisine">Pakistani Cuisine</option>
+            <option value="BBQ Menu">BBQ Menu</option>
+            <option value="Chinese Cuisine">Chinese Cuisine</option>
+            <option value="Continental Cuisine">Continental Cuisine</option>
+            <option value="Desserts and Hi-Tea">Desserts &amp; Hi-Tea</option>
+            <option value="Buffet Menu">Buffet Menu</option>
+            <option value="Customized Menu">Customized Menu</option>
+          </select>
+        </label>
+
         <label for="booking-date">Preferred Event Date
-          <input type="date" id="booking-date" name="date" required>
+          <input
+            type="date"
+            id="booking-date"
+            name="date"
+            required
+          >
         </label>
+
         <label for="guest-count">Number of Guests
-          <input type="number" id="guest-count" name="guests" min="1" max="10000" required>
+          <input
+            type="number"
+            id="guest-count"
+            name="guests"
+            min="1"
+            max="10000"
+            required
+          >
         </label>
+
         <label for="booking-notes">Additional Details
-          <textarea id="booking-notes" name="notes" placeholder="Theme, venue or special requirements"></textarea>
+          <textarea
+            id="booking-notes"
+            name="notes"
+            placeholder="Share any additional requirements..."
+          ></textarea>
         </label>
+
         <button type="submit" class="btn">Submit Booking Request ↗</button>
         <p id="booking-message" role="status" aria-live="polite"></p>
       </form>
@@ -329,19 +436,24 @@
         <label for="contact-name">Your Name
           <input type="text" id="contact-name" name="name" required>
         </label>
+
         <label for="contact-email">Email Address
           <input type="email" id="contact-email" name="email" required>
         </label>
+
         <label for="contact-subject">Subject
           <input type="text" id="contact-subject" name="subject" required>
         </label>
+
         <label for="contact-message">Your Message
           <textarea id="contact-message" name="message" required></textarea>
         </label>
+
         <button type="submit" class="btn">Send Message ↗</button>
         <p id="form-message" role="status" aria-live="polite"></p>
       </form>
     </section>
+
   </main>
 
   <!-- FOOTER -->
@@ -350,15 +462,18 @@
       <span class="brand-name">Momentsia</span>
       <span class="brand-byline">BY HIRA MANSHA</span>
     </a>
+
     <p>Thoughtfully planned. Beautifully remembered.</p>
     <p>&copy; 2026 Momentsia by Hira Mansha. All rights reserved.</p>
   </footer>
 
+  <!-- JAVASCRIPT FILES -->
   <script src="js/events.js"></script>
   <script src="js/bookings.js"></script>
   <script src="js/services.js"></script>
   <script src="js/admin.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
+
 </body>
 </html>

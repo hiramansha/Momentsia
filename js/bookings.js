@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const bookingForm = document.getElementById("booking-form");
   const bookingMessage = document.getElementById("booking-message");
@@ -14,17 +13,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // BOOKING FORM
   bookingForm?.addEventListener("submit", event => {
     event.preventDefault();
 
     if (!bookingForm.reportValidity()) return;
 
     const formData = new FormData(bookingForm);
+
     const booking = {
       id: `BK-${Date.now()}`,
       name: formData.get("name").trim(),
       email: formData.get("email").trim(),
       eventType: formData.get("eventType"),
+      venue: formData.get("venue"),
+      theme: formData.get("theme"),
+      menu: formData.get("menu"),
       date: formData.get("date"),
       guests: Number(formData.get("guests")),
       notes: formData.get("notes").trim(),
@@ -32,8 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
       createdAt: new Date().toISOString()
     };
 
+    // Prevent past event dates
     if (booking.date < new Date().toISOString().slice(0, 10)) {
-      bookingMessage.textContent = "Please select today or a future date.";
+      bookingMessage.textContent =
+        "Please select today or a future date.";
       return;
     }
 
@@ -41,20 +47,29 @@ document.addEventListener("DOMContentLoaded", () => {
     bookings.push(booking);
 
     try {
-      localStorage.setItem("momentsia_bookings", JSON.stringify(bookings));
-      bookingMessage.textContent = `Your demo booking request has been saved. Reference: ${booking.id}`;
+      localStorage.setItem(
+        "momentsia_bookings",
+        JSON.stringify(bookings)
+      );
+
+      bookingMessage.textContent =
+        `Your demo booking request has been saved. Reference: ${booking.id}`;
+
       bookingForm.reset();
     } catch {
-      bookingMessage.textContent = "Unable to save this request in your browser. Please try again.";
+      bookingMessage.textContent =
+        "Unable to save this request in your browser. Please try again.";
     }
   });
 
+  // CONTACT FORM
   contactForm?.addEventListener("submit", event => {
     event.preventDefault();
 
     if (!contactForm.reportValidity()) return;
 
     const formData = new FormData(contactForm);
+
     const message = {
       name: formData.get("name").trim(),
       email: formData.get("email").trim(),
@@ -67,11 +82,18 @@ document.addEventListener("DOMContentLoaded", () => {
     messages.push(message);
 
     try {
-      localStorage.setItem("momentsia_messages", JSON.stringify(messages));
-      contactMessage.textContent = "Your message has been saved in this browser demo. It has not been emailed.";
+      localStorage.setItem(
+        "momentsia_messages",
+        JSON.stringify(messages)
+      );
+
+      contactMessage.textContent =
+        "Your message has been saved in this browser demo. It has not been emailed.";
+
       contactForm.reset();
     } catch {
-      contactMessage.textContent = "Unable to save the message. Please try again.";
+      contactMessage.textContent =
+        "Unable to save the message. Please try again.";
     }
   });
 });
