@@ -105,6 +105,8 @@
           <p><strong>Menu:</strong> ${escapeHTML(booking.menu)}</p>
           <p><strong>Date:</strong> ${escapeHTML(booking.date)}</p>
           <p><strong>Guests:</strong> ${escapeHTML(booking.guests)}</p>
+          <p><strong>Package:</strong> ${escapeHTML(booking.package || "Not selected")}</p>
+          <p><strong>Estimated Cost:</strong> ${booking.estimatedCost ? "PKR " + Number(booking.estimatedCost).toLocaleString("en-PK") : "Not available"}</p>
           <p><strong>Notes:</strong> ${escapeHTML(booking.notes || "None")}</p>
           <p><strong>Status:</strong> ${escapeHTML(status)}</p>
 

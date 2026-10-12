@@ -128,7 +128,10 @@
         <div class="event-detail-layout">
           <div class="event-detail-photo">
             <img id="detail-image" src="" alt="Selected event">
+            <button type="button" class="gallery-arrow gallery-prev" id="gallery-prev" aria-label="Previous photo">‹</button>
+            <button type="button" class="gallery-arrow gallery-next" id="gallery-next" aria-label="Next photo">›</button>
             <span class="detail-photo-label">A MOMENTSIA EXPERIENCE</span>
+            <div class="event-gallery-thumbnails" id="event-gallery-thumbnails" aria-label="Event photos"></div>
           </div>
 
           <div class="event-detail-content">
@@ -416,6 +419,23 @@
           Enter your preferred menu
           <input type="text" id="booking-menu-other" name="customMenu" placeholder="Enter your preferred menu" maxlength="150">
         </label>
+
+        <!-- EVENT PACKAGE -->
+        <label for="booking-package">Choose Your Package
+          <select id="booking-package" name="package" required>
+            <option value="">Select a package</option>
+            <option value="Basic">Basic — PKR 1,500 per guest</option>
+            <option value="Premium">Premium — PKR 3,000 per guest</option>
+            <option value="Luxury">Luxury — PKR 5,000 per guest</option>
+          </select>
+        </label>
+
+        <!-- LIVE COST ESTIMATE -->
+        <div id="cost-estimate" class="cost-estimate" aria-live="polite">
+          <p>Estimated Event Cost</p>
+          <strong id="estimated-cost">Select a package and guest count</strong>
+          <small>Final price may vary according to your requirements.</small>
+        </div>
 
         <label for="booking-date">Preferred Event Date
           <input

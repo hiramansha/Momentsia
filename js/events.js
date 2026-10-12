@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let activeCategory = "All";
   let currentEvent = null;
+  let currentPhotoIndex = 0;
 
   const eventData = {
     "Elegant Wedding Showcase": {
@@ -58,6 +59,34 @@ document.addEventListener("DOMContentLoaded", () => {
       image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=85",
       description: "Take part in an engaging conference featuring professional discussions, knowledge sharing and opportunities to connect."
     }
+  };
+
+  const galleryImages = {
+    "Elegant Wedding Showcase": [
+      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=85"
+    ],
+    "Dream Birthday Experience": [
+      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=85"
+    ],
+    "Under the Stars Concert": [
+      "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1200&q=85"
+    ],
+    "Corporate Excellence Summit": [
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=85"
+    ],
+    "Future Leaders Conference": [
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=85"
+    ]
   };
 
   function getCardTitle(card) {
@@ -127,6 +156,61 @@ document.addEventListener("DOMContentLoaded", () => {
     filterEvents();
   });
 
+  function renderGallery(title) {
+    const image = document.getElementById("detail-image");
+    const thumbnails = document.getElementById("event-gallery-thumbnails");
+    const previous = document.getElementById("gallery-prev");
+    const next = document.getElementById("gallery-next");
+    const photos = galleryImages[title] || [eventData[title].image];
+
+    currentPhotoIndex = (currentPhotoIndex + photos.length) % photos.length;
+
+    if (image) {
+      image.src = photos[currentPhotoIndex];
+      image.alt = `${title} photo ${currentPhotoIndex + 1}`;
+      image.classList.remove("gallery-image-visible");
+      requestAnimationFrame(() => image.classList.add("gallery-image-visible"));
+    }
+
+    if (thumbnails) {
+      thumbnails.replaceChildren();
+      photos.forEach((src, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `gallery-thumbnail${index === currentPhotoIndex ? " active" : ""}`;
+        button.setAttribute("aria-label", `Show photo ${index + 1}`);
+        button.setAttribute("aria-pressed", String(index === currentPhotoIndex));
+
+        const thumb = document.createElement("img");
+        thumb.src = src;
+        thumb.alt = "";
+        thumb.loading = "lazy";
+        button.appendChild(thumb);
+
+        button.addEventListener("click", () => {
+          currentPhotoIndex = index;
+          renderGallery(title);
+        });
+        thumbnails.appendChild(button);
+      });
+    }
+
+    if (previous) previous.hidden = photos.length < 2;
+    if (next) next.hidden = photos.length < 2;
+  }
+
+  document.getElementById("gallery-prev")?.addEventListener("click", () => {
+    if (!currentEvent) return;
+    currentPhotoIndex--;
+    renderGallery(currentEvent);
+  });
+
+  document.getElementById("gallery-next")?.addEventListener("click", () => {
+    if (!currentEvent) return;
+    currentPhotoIndex++;
+    renderGallery(currentEvent);
+  });
+
   function openEvent(title) {
     const data = eventData[title];
     if (!data || !grid || !categoryBar || !detailView) return;
@@ -140,11 +224,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("detail-location").textContent = data.location;
     document.getElementById("detail-price").textContent = data.price;
 
-    const image = document.getElementById("detail-image");
-    if (image) {
-      image.src = data.image;
-      image.alt = title;
-    }
+    currentPhotoIndex = 0;
+    renderGallery(title);
 
     cards.forEach(card => {
       card.hidden = true;

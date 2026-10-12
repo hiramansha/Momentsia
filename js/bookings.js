@@ -38,6 +38,35 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCustomField();
   });
 
+  // LIVE PACKAGE COST CALCULATOR
+  const packageSelect = document.getElementById("booking-package");
+  const guestCountInput = document.getElementById("guest-count");
+  const estimatedCost = document.getElementById("estimated-cost");
+
+  const packagePrices = {
+    Basic: 1500,
+    Premium: 3000,
+    Luxury: 5000
+  };
+
+  function updateEstimatedCost() {
+    if (!packageSelect || !guestCountInput || !estimatedCost) return;
+
+    const price = packagePrices[packageSelect.value];
+    const guests = Number(guestCountInput.value);
+
+    if (!price || !Number.isFinite(guests) || guests < 1) {
+      estimatedCost.textContent = "Select a package and guest count";
+      return;
+    }
+
+    estimatedCost.textContent =
+      `PKR ${(price * guests).toLocaleString("en-PK")}`;
+  }
+
+  packageSelect?.addEventListener("change", updateEstimatedCost);
+  guestCountInput?.addEventListener("input", updateEstimatedCost);
+
   // BOOKING FORM
   bookingForm?.addEventListener("submit", event => {
     event.preventDefault();
@@ -56,6 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
       menu: formData.get("menu") === "Other" ? formData.get("customMenu").trim() : formData.get("menu"),
       date: formData.get("date"),
       guests: Number(formData.get("guests")),
+      package: formData.get("package"),
+      estimatedCost: Number(formData.get("guests")) * ({ Basic: 1500, Premium: 3000, Luxury: 5000 }[formData.get("package")] || 0),
       notes: formData.get("notes").trim(),
       status: "Pending",
       createdAt: new Date().toISOString()
