@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     navLinks?.classList.remove("active");
     menuButton?.setAttribute("aria-expanded", "false");
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "auto" });
   }
 
   function enterWebsite() {

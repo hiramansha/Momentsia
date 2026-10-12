@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,8 +57,13 @@
       <span class="brand-byline">BY HIRA MANSHA</span>
     </a>
 
-    <button class="menu-toggle" id="menu-toggle" type="button"
-      aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <button
+      class="menu-toggle"
+      id="menu-toggle"
+      type="button"
+      aria-label="Toggle navigation"
+      aria-expanded="false"
+    >☰</button>
 
     <nav aria-label="Main navigation">
       <ul class="nav-links" id="nav-links">
@@ -66,11 +72,12 @@
         <li><a href="#services">Services</a></li>
         <li><a href="#booking">Bookings</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="#admin-dashboard">Admin</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
+<main>
 
     <!-- HOME -->
     <section class="hero page-section" id="home">
@@ -88,8 +95,12 @@
         <a href="#events" class="btn">Discover Our Events ↗</a>
 
         <form class="event-search" id="event-search" role="search">
-          <input type="search" id="search-query"
-            placeholder="Find your perfect event..." aria-label="Search events">
+          <input
+            type="search"
+            id="search-query"
+            placeholder="Find your perfect event..."
+            aria-label="Search events"
+          >
           <button class="btn" type="submit">Search</button>
         </form>
       </div>
@@ -158,7 +169,6 @@
 
         <article class="event-card" data-category="Wedding">
           <div class="event-image wedding-image" role="img" aria-label="Wedding venue"></div>
-
           <div class="event-card-content">
             <span class="event-category-label">WEDDING</span>
             <h3>Elegant Wedding Showcase</h3>
@@ -174,7 +184,6 @@
 
         <article class="event-card" data-category="Birthday">
           <div class="event-image birthday-image" role="img" aria-label="Birthday celebration"></div>
-
           <div class="event-card-content">
             <span class="event-category-label">BIRTHDAY</span>
             <h3>Dream Birthday Experience</h3>
@@ -190,7 +199,6 @@
 
         <article class="event-card" data-category="Music">
           <div class="event-image music-image" role="img" aria-label="Music concert"></div>
-
           <div class="event-card-content">
             <span class="event-category-label">MUSIC</span>
             <h3>Under the Stars Concert</h3>
@@ -206,7 +214,6 @@
 
         <article class="event-card" data-category="Corporate">
           <div class="event-image corporate-image" role="img" aria-label="Corporate event and networking"></div>
-
           <div class="event-card-content">
             <span class="event-category-label">CORPORATE</span>
             <h3>Corporate Excellence Summit</h3>
@@ -222,7 +229,6 @@
 
         <article class="event-card" data-category="Conference">
           <div class="event-image conference-image" role="img" aria-label="Conference with audience and stage"></div>
-
           <div class="event-card-content">
             <span class="event-category-label">CONFERENCE</span>
             <h3>Future Leaders Conference</h3>
@@ -362,43 +368,54 @@
             <option value="Hotel Ballroom">Hotel Ballroom</option>
             <option value="Conference Hall">Conference Hall</option>
             <option value="Private Event Space">Private Event Space</option>
+            <option value="Other">Other</option>
           </select>
         </label>
+        <label for="booking-venue-other" class="other-field" id="booking-venue-other-wrapper" hidden>
+          Enter your preferred venue
+          <input type="text" id="booking-venue-other" name="customVenue" placeholder="Enter your preferred venue" maxlength="150">
+        </label>
 
+        <!-- ONE THEME DROPDOWN -->
         <label for="booking-theme">Select Theme
           <select id="booking-theme" name="theme" required>
             <option value="">Choose your theme</option>
-            <option value="Royal Gold">Royal Gold</option>
-            <option value="Floral Romance">Floral Romance</option>
+            <option value="Royal Elegance">Royal Elegance</option>
             <option value="Pastel Dream">Pastel Dream</option>
             <option value="Modern Minimalist">Modern Minimalist</option>
             <option value="Traditional Pakistani">Traditional Pakistani</option>
             <option value="Fairy Lights">Fairy Lights</option>
             <option value="Black and White">Black &amp; White</option>
-          </select>
+            <option value="Mehndi and Dholki">Mehndi &amp; Dholki</option>
+            <option value="Boho Chic">Boho Chic</option>
+            <option value="Custom Theme">Custom Theme</option>
+  <option value="Other">Other</option>
+  </select>
+        </label>
+        <label for="booking-theme-other" class="other-field" id="booking-theme-other-wrapper" hidden>
+          Enter your preferred theme
+          <input type="text" id="booking-theme-other" name="customTheme" placeholder="Enter your preferred theme" maxlength="150">
         </label>
 
-        
-<label for="booking-theme">Preferred Event Theme
-  <select id="booking-theme" name="theme" required>
-    <option value="">Choose your event theme</option>
-    <option value="Royal Elegance">Royal Elegance</option>
-    <option value="Floral Garden">Floral Garden</option>
-    <option value="Fairy Lights &amp; Candlelight">Fairy Lights &amp; Candlelight</option>
-    <option value="Pastel Dream">Pastel Dream</option>
-    <option value="Traditional Pakistani">Traditional Pakistani</option>
-    <option value="Mehndi &amp; Dholki">Mehndi &amp; Dholki</option>
-    <option value="Luxury Gold &amp; White">Luxury Gold &amp; White</option>
-    <option value="Black Tie Glamour">Black Tie Glamour</option>
-    <option value="Modern Minimalist">Modern Minimalist</option>
-    <option value="Boho Chic">Boho Chic</option>
-    <option value="Vintage Romance">Vintage Romance</option>
-    <option value="Bollywood Night">Bollywood Night</option>
-    <option value="Tropical Paradise">Tropical Paradise</option>
-    <option value="Winter Wonderland">Winter Wonderland</option>
-    <option value="Custom Theme">Custom Theme</option>
+        <!-- ONE MENU DROPDOWN -->
+        <label for="booking-menu">Preferred Menu
+          <select id="booking-menu" name="menu" required>
+            <option value="">Choose your menu</option>
+            <option value="Pakistani Cuisine">Pakistani Cuisine</option>
+            <option value="Continental Cuisine">Continental Cuisine</option>
+            <option value="Chinese Cuisine">Chinese Cuisine</option>
+            <option value="BBQ Menu">BBQ Menu</option>
+            <option value="Buffet Menu">Buffet Menu</option>
+            <option value="Hi-Tea Menu">Hi-Tea Menu</option>
+            <option value="Desserts and Refreshments">Desserts &amp; Refreshments</option>
+            <option value="Custom Menu">Custom Menu</option>
+  <option value="Other">Other</option>
   </select>
-</label>
+        </label>
+        <label for="booking-menu-other" class="other-field" id="booking-menu-other-wrapper" hidden>
+          Enter your preferred menu
+          <input type="text" id="booking-menu-other" name="customMenu" placeholder="Enter your preferred menu" maxlength="150">
+        </label>
 
         <label for="booking-date">Preferred Event Date
           <input
@@ -461,6 +478,73 @@
         <button type="submit" class="btn">Send Message ↗</button>
         <p id="form-message" role="status" aria-live="polite"></p>
       </form>
+    </section>
+
+
+    <!-- ADMIN DASHBOARD (LOCAL DEMO) -->
+    <section id="admin-dashboard" class="page-section section-hidden">
+      <div class="section-heading">
+        <p class="eyebrow">MOMENTSIA MANAGEMENT</p>
+        <h2>Admin Dashboard</h2>
+        <p>Review and manage booking requests saved in this browser.</p>
+      </div>
+
+      <div class="admin-stats">
+        <article class="admin-stat">
+          <span>Total Bookings</span>
+          <strong id="admin-total-bookings">0</strong>
+        </article>
+        <article class="admin-stat">
+          <span>Pending</span>
+          <strong id="admin-pending-bookings">0</strong>
+        </article>
+        <article class="admin-stat">
+          <span>Confirmed</span>
+          <strong id="admin-confirmed-bookings">0</strong>
+        </article>
+        <article class="admin-stat">
+          <span>Cancelled</span>
+          <strong id="admin-cancelled-bookings">0</strong>
+        </article>
+      </div>
+
+      <div class="admin-toolbar">
+        <label for="admin-booking-search">Search bookings
+          <input id="admin-booking-search" type="search"
+            placeholder="Search name, email or reference">
+        </label>
+        <label for="admin-status-filter">Filter by status
+          <select id="admin-status-filter">
+            <option value="all">All Bookings</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </label>
+        <button type="button" class="btn" id="admin-export-bookings">
+          Export Bookings
+        </button>
+      </div>
+
+      <div id="admin-bookings-list" class="admin-bookings-list"
+        aria-live="polite">
+        <p>Loading bookings...</p>
+      </div>
+
+      <section class="admin-messages-panel">
+        <div class="section-heading">
+          <p class="eyebrow">CUSTOMER COMMUNICATION</p>
+          <h2>Customer Messages</h2>
+          <p>Messages submitted through the Contact form.</p>
+        </div>
+        <div id="admin-messages-list" class="admin-bookings-list" aria-live="polite">
+          <p>Loading messages...</p>
+        </div>
+      </section>
+
+      <p class="admin-note">
+        Demo only: bookings are stored in this browser, not a shared database.
+      </p>
     </section>
 
   </main>

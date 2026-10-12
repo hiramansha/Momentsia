@@ -13,6 +13,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // CUSTOM OPTIONS: VENUE, THEME AND MENU
+  const customFields = [
+    ["booking-venue", "booking-venue-other", "customVenue"],
+    ["booking-theme", "booking-theme-other", "customTheme"],
+    ["booking-menu", "booking-menu-other", "customMenu"]
+  ];
+
+  customFields.forEach(([selectId, inputId, fieldName]) => {
+    const select = document.getElementById(selectId);
+    const input = document.getElementById(inputId);
+    const wrapper = document.getElementById(`${inputId}-wrapper`);
+
+    if (!select || !input || !wrapper) return;
+
+    const updateCustomField = () => {
+      const show = select.value === "Other";
+      wrapper.hidden = !show;
+      input.required = show;
+      if (!show) input.value = "";
+    };
+
+    select.addEventListener("change", updateCustomField);
+    updateCustomField();
+  });
+
   // BOOKING FORM
   bookingForm?.addEventListener("submit", event => {
     event.preventDefault();
@@ -26,9 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
       name: formData.get("name").trim(),
       email: formData.get("email").trim(),
       eventType: formData.get("eventType"),
-      venue: formData.get("venue"),
-      theme: formData.get("theme"),
-      menu: formData.get("menu"),
+      venue: formData.get("venue") === "Other" ? formData.get("customVenue").trim() : formData.get("venue"),
+      theme: formData.get("theme") === "Other" ? formData.get("customTheme").trim() : formData.get("theme"),
+      menu: formData.get("menu") === "Other" ? formData.get("customMenu").trim() : formData.get("menu"),
       date: formData.get("date"),
       guests: Number(formData.get("guests")),
       notes: formData.get("notes").trim(),
@@ -52,10 +77,23 @@ document.addEventListener("DOMContentLoaded", () => {
         JSON.stringify(bookings)
       );
 
-      bookingMessage.textContent =
-        `Your demo booking request has been saved. Reference: ${booking.id}`;
+    bookingMessage.textContent =
+  `Booking request saved successfully! Reference: ${booking.id} | Event: ${booking.eventType} | Venue: ${booking.venue} | Theme: ${booking.theme} | Menu: ${booking.menu} | Date: ${booking.date} | Guests: ${booking.guests}`;
 
       bookingForm.reset();
+
+      // Reset custom Venue, Theme and Menu fields
+      customFields.forEach(([selectId, inputId]) => {
+        const select = document.getElementById(selectId);
+        const input = document.getElementById(inputId);
+        const wrapper = document.getElementById(`${inputId}-wrapper`);
+
+        if (select && input && wrapper) {
+          wrapper.hidden = true;
+          input.required = false;
+          input.value = "";
+        }
+      });
     } catch {
       bookingMessage.textContent =
         "Unable to save this request in your browser. Please try again.";

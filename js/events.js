@@ -156,10 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
     categoryBar.hidden = true;
     detailView.hidden = false;
 
-    detailView.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+    window.scrollTo({
+  top: 0,
+  behavior: "instant"
+});
   }
 
   cards.forEach(card => {
