@@ -2408,3 +2408,27 @@ html {
     animation: none;
   }
 }
+
+/* FIX: Restore Momentsia event card background images */
+#event-grid .event-image.wedding-image {
+  background-image: url("https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1000&q=85") !important;
+}
+#event-grid .event-image.birthday-image {
+  background-image: url("https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1000&q=85") !important;
+}
+#event-grid .event-image.music-image {
+  background-image: url("https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1000&q=85") !important;
+}
+#event-grid .event-image.corporate-image {
+  background-image: url("https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1000&q=85") !important;
+}
+#event-grid .event-image.conference-image {
+  background-image: url("https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1000&q=85") !important;
+}
+#event-grid .event-image {
+  min-height: 235px;
+  height: 235px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
