@@ -966,3 +966,180 @@ section { padding: 82px 7%; }
     font-size: 16px;
   }
 }
+
+
+/* MOMENTSIA — LUXURY BOOKING FORM REDESIGN */
+
+#booking {
+  background: linear-gradient(
+    135deg,
+    #f4e9e0 0%,
+    #fbf6f0 48%,
+    #eadbd0 100%
+  );
+  padding: 90px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+#booking .section-heading {
+  max-width: 760px;
+  margin: 0 auto 38px;
+  text-align: center;
+}
+
+#booking .section-heading .eyebrow {
+  color: #a77950;
+  letter-spacing: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+#booking .section-heading h2 {
+  color: #482b36;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2.3rem, 5vw, 3.7rem);
+  line-height: 1.15;
+  margin: 14px 0;
+}
+
+#booking .section-heading > p:last-child {
+  color: #79656b;
+  line-height: 1.8;
+}
+
+#booking-form {
+  width: min(100%, 780px);
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 52px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  background: rgba(255, 253, 249, 0.94);
+  border: 1px solid rgba(167, 121, 80, 0.25);
+  border-radius: 22px;
+  box-shadow: 0 24px 65px rgba(72, 43, 54, 0.12);
+}
+
+#booking-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #482b36;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+#booking-form input,
+#booking-form select,
+#booking-form textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  padding: 14px 15px;
+  border: 1px solid #e4d5ca;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #482b36;
+  font: inherit;
+  font-weight: 400;
+  transition: border-color 0.25s ease,
+              box-shadow 0.25s ease,
+              background-color 0.25s ease;
+}
+
+#booking-form select {
+  cursor: pointer;
+}
+
+#booking-form input::placeholder,
+#booking-form textarea::placeholder {
+  color: #a49696;
+}
+
+#booking-form input:hover,
+#booking-form select:hover,
+#booking-form textarea:hover {
+  border-color: #bd9674;
+}
+
+#booking-form input:focus,
+#booking-form select:focus,
+#booking-form textarea:focus {
+  outline: none;
+  border-color: #a77950;
+  background-color: #fffdf9;
+  box-shadow: 0 0 0 4px rgba(167, 121, 80, 0.13);
+}
+
+#booking-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+#booking-form label:has(#booking-venue),
+#booking-form label:has(#booking-theme),
+#booking-form label:has(#booking-menu),
+#booking-form label:has(#booking-notes) {
+  grid-column: 1 / -1;
+  padding: 18px;
+  border: 1px solid #eee1d6;
+  border-radius: 14px;
+  background: #faf3ec;
+}
+
+#booking-form button {
+  grid-column: 1 / -1;
+  justify-self: stretch;
+  min-height: 54px;
+  padding: 15px 24px;
+  border: 1px solid #482b36;
+  border-radius: 10px;
+  background: #482b36;
+  color: #fffaf5;
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: transform 0.25s ease,
+              background-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+#booking-form button:hover {
+  background: #68404d;
+  box-shadow: 0 10px 25px rgba(72, 43, 54, 0.18);
+  transform: translateY(-2px);
+}
+
+#booking-message {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #482b36;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  #booking {
+    padding: 58px 16px;
+  }
+
+  #booking-form {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 22px 16px;
+    gap: 20px;
+    border-radius: 16px;
+  }
+
+  #booking-form label:has(#booking-venue),
+  #booking-form label:has(#booking-theme),
+  #booking-form label:has(#booking-menu),
+  #booking-form label:has(#booking-notes) {
+    padding: 13px;
+  }
+
+  #booking-form button {
+    grid-column: 1;
+  }
+}
