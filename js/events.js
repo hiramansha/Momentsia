@@ -294,3 +294,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   filterEvents();
 });
+// Momentsia standalone gallery filters
+document.querySelectorAll(".gallery-filter").forEach(button => {
+  button.addEventListener("click", () => {
+    const category = button.dataset.galleryCategory;
+
+    document.querySelectorAll(".gallery-filter").forEach(item => {
+      item.classList.toggle("active", item === button);
+    });
+
+    document.querySelectorAll(".premium-gallery-item").forEach(card => {
+      card.hidden = category !== "All" &&
+        card.dataset.galleryCategory !== category;
+    });
+  });
+});
