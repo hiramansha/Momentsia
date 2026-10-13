@@ -67,53 +67,64 @@ document.addEventListener("DOMContentLoaded", () => {
   packageSelect?.addEventListener("change", updateEstimatedCost);
   guestCountInput?.addEventListener("input", updateEstimatedCost);
 
-  // BOOKING FORM
-  bookingForm?.addEventListener("submit", event => {
+
+  // Backend URL for GitHub Codespaces or local development
+  const API_BASE_URL = window.location.hostname.endsWith(".app.github.dev")
+    ? window.location.protocol + "//" +
+      window.location.hostname.replace(/-\d+\.app\.github\.dev$/, "-5000.app.github.dev")
+    : "http://localhost:5000";
+
+  // BOOKING FORM: SAVE TO MONGODB
+  bookingForm?.addEventListener("submit", async event => {
     event.preventDefault();
 
     if (!bookingForm.reportValidity()) return;
 
     const formData = new FormData(bookingForm);
-
     const booking = {
-      id: `BK-${Date.now()}`,
-      name: formData.get("name").trim(),
-      email: formData.get("email").trim(),
+      name: formData.get("name")?.trim(),
+      email: formData.get("email")?.trim(),
       eventType: formData.get("eventType"),
-      venue: formData.get("venue") === "Other" ? formData.get("customVenue").trim() : formData.get("venue"),
-      theme: formData.get("theme") === "Other" ? formData.get("customTheme").trim() : formData.get("theme"),
-      menu: formData.get("menu") === "Other" ? formData.get("customMenu").trim() : formData.get("menu"),
+      venue: formData.get("venue") === "Other"
+        ? formData.get("customVenue")?.trim()
+        : formData.get("venue"),
+      theme: formData.get("theme") === "Other"
+        ? formData.get("customTheme")?.trim()
+        : formData.get("theme"),
+      menu: formData.get("menu") === "Other"
+        ? formData.get("customMenu")?.trim()
+        : formData.get("menu"),
       date: formData.get("date"),
       guests: Number(formData.get("guests")),
       package: formData.get("package"),
-      estimatedCost: Number(formData.get("guests")) * ({ Basic: 1500, Premium: 3000, Luxury: 5000 }[formData.get("package")] || 0),
-      notes: formData.get("notes").trim(),
-      status: "Pending",
-      createdAt: new Date().toISOString()
+      notes: formData.get("notes")?.trim() || ""
     };
 
-    // Prevent past event dates
     if (booking.date < new Date().toISOString().slice(0, 10)) {
-      bookingMessage.textContent =
-        "Please select today or a future date.";
+      bookingMessage.textContent = "Please select today or a future date.";
       return;
     }
 
-    const bookings = readSavedItems("momentsia_bookings");
-    bookings.push(booking);
+    bookingMessage.textContent = "Submitting your booking...";
 
     try {
-      localStorage.setItem(
-        "momentsia_bookings",
-        JSON.stringify(bookings)
-      );
+      const response = await fetch(`${API_BASE_URL}/api/bookings`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(booking)
+      });
 
-    bookingMessage.textContent =
-  `Booking request saved successfully! Reference: ${booking.id} | Event: ${booking.eventType} | Venue: ${booking.venue} | Theme: ${booking.theme} | Menu: ${booking.menu} | Date: ${booking.date} | Guests: ${booking.guests}`;
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Unable to submit booking.");
+      }
+
+      bookingMessage.textContent =
+        `Booking request saved successfully! Reference: ${result.booking.id}`;
 
       bookingForm.reset();
 
-      // Reset custom Venue, Theme and Menu fields
       customFields.forEach(([selectId, inputId]) => {
         const select = document.getElementById(selectId);
         const input = document.getElementById(inputId);
@@ -125,44 +136,48 @@ document.addEventListener("DOMContentLoaded", () => {
           input.value = "";
         }
       });
-    } catch {
+
+      updateEstimatedCost();
+    } catch (error) {
       bookingMessage.textContent =
-        "Unable to save this request in your browser. Please try again.";
+        error.message || "Unable to connect to the server. Please try again.";
     }
   });
 
-  // CONTACT FORM
-  contactForm?.addEventListener("submit", event => {
+  // CONTACT FORM: SAVE TO MONGODB
+  contactForm?.addEventListener("submit", async event => {
     event.preventDefault();
 
     if (!contactForm.reportValidity()) return;
 
     const formData = new FormData(contactForm);
-
     const message = {
-      name: formData.get("name").trim(),
-      email: formData.get("email").trim(),
-      subject: formData.get("subject").trim(),
-      message: formData.get("message").trim(),
-      createdAt: new Date().toISOString()
+      name: formData.get("name")?.trim(),
+      email: formData.get("email")?.trim(),
+      subject: formData.get("subject")?.trim(),
+      message: formData.get("message")?.trim()
     };
 
-    const messages = readSavedItems("momentsia_messages");
-    messages.push(message);
+    contactMessage.textContent = "Sending your message...";
 
     try {
-      localStorage.setItem(
-        "momentsia_messages",
-        JSON.stringify(messages)
-      );
+      const response = await fetch(`${API_BASE_URL}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(message)
+      });
 
-      contactMessage.textContent =
-        "Your message has been saved in this browser demo. It has not been emailed.";
+      const result = await response.json();
 
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Unable to send message.");
+      }
+
+      contactMessage.textContent = result.message;
       contactForm.reset();
-    } catch {
+    } catch (error) {
       contactMessage.textContent =
-        "Unable to save the message. Please try again.";
+        error.message || "Unable to connect to the server. Please try again.";
     }
   });
 });
