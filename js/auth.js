@@ -1,20 +1,39 @@
 
-/*
-  Momentsia Authentication
-
-  Login and registration UI and a secure backend are not connected yet.
-  Do not store passwords or authentication tokens in localStorage.
-
-  When authentication is added, connect this module to a real backend
-  or a properly configured authentication provider.
-*/
-
 window.MomentsiaAuth = {
-  isConfigured: false,
+  isConfigured: true,
+
+  async login(password) {
+    const response = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ password })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Login failed.");
+    }
+
+    // Keep the token only for this browser tab session.
+    sessionStorage.setItem("momentsiaAdminToken", result.token);
+
+    return result;
+  },
+
+  logout() {
+    sessionStorage.removeItem("momentsiaAdminToken");
+  },
+
+  getToken() {
+    return sessionStorage.getItem("momentsiaAdminToken");
+  },
 
   getStatus() {
-    return this.isConfigured
-      ? "Authentication is configured."
-      : "Authentication has not been connected yet.";
+    return this.getToken()
+      ? "Admin is logged in."
+      : "Admin is not logged in.";
   }
 };
