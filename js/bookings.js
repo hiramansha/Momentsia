@@ -1,37 +1,25 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const bookingForm = document.getElementById("booking-form");
   const bookingMessage = document.getElementById("booking-message");
   const contactForm = document.getElementById("contact-form");
   const contactMessage = document.getElementById("form-message");
 
-  // API URL: live website uses the same origin.
-  // Local development and Codespaces remain supported.
-  const hostname = window.location.hostname;
-
   const API_BASE_URL =
-    hostname === "localhost" || hostname === "127.0.0.1"
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
       ? "http://localhost:5000"
-      : hostname.endsWith(".app.github.dev")
-        ? `${window.location.protocol}//${hostname.replace(
+      : window.location.hostname.endsWith(".app.github.dev")
+        ? `${window.location.protocol}//${window.location.hostname.replace(
             /-\d+\.app\.github\.dev$/,
             "-5000.app.github.dev"
           )}`
-        : "";
+        : "https://momentsia.23-st-028.workers.dev";
 
-  function readSavedItems(key) {
-    try {
-      const value = JSON.parse(localStorage.getItem(key) || "[]");
-      return Array.isArray(value) ? value : [];
-    } catch {
-      return [];
-    }
-  }
-
-  // CUSTOM OPTIONS: VENUE, THEME AND MENU
   const customFields = [
-    ["booking-venue", "booking-venue-other", "customVenue"],
-    ["booking-theme", "booking-theme-other", "customTheme"],
-    ["booking-menu", "booking-menu-other", "customMenu"]
+    ["booking-venue", "booking-venue-other"],
+    ["booking-theme", "booking-theme-other"],
+    ["booking-menu", "booking-menu-other"]
   ];
 
   customFields.forEach(([selectId, inputId]) => {
@@ -41,19 +29,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!select || !input || !wrapper) return;
 
-    function updateCustomField() {
+    const update = () => {
       const show = select.value === "Other";
       wrapper.hidden = !show;
       input.required = show;
-
       if (!show) input.value = "";
-    }
+    };
 
-    select.addEventListener("change", updateCustomField);
-    updateCustomField();
+    select.addEventListener("change", update);
+    update();
   });
 
-  // LIVE PACKAGE COST CALCULATOR
   const packageSelect = document.getElementById("booking-package");
   const guestCountInput = document.getElementById("guest-count");
   const estimatedCost = document.getElementById("estimated-cost");
@@ -83,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
   guestCountInput?.addEventListener("input", updateEstimatedCost);
   updateEstimatedCost();
 
-  // Safely handle JSON and unexpected server responses.
   async function apiRequest(path, options = {}) {
     let response;
 
@@ -97,29 +82,26 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } catch {
       throw new Error(
-        "Cannot connect to the backend. The API may not be deployed yet."
+        "Cannot connect to the backend. Check the Worker deployment."
       );
     }
 
     const contentType = response.headers.get("content-type") || "";
+
+    if (!contentType.includes("application/json")) {
+      throw new Error(`Server returned an unexpected response (${response.status}).`);
+    }
+
     let result;
 
-    if (contentType.includes("application/json")) {
-      try {
-        result = await response.json();
-      } catch {
-        throw new Error("The server returned invalid JSON.");
-      }
-    } else {
-      throw new Error(
-        `Server error (${response.status}). The API route may not be configured.`
-      );
+    try {
+      result = await response.json();
+    } catch {
+      throw new Error("The server returned invalid JSON.");
     }
 
     if (!response.ok || !result.success) {
-      throw new Error(
-        result.message || `Request failed (${response.status}).`
-      );
+      throw new Error(result.message || `Request failed (${response.status}).`);
     }
 
     return result;
@@ -129,53 +111,64 @@ document.addEventListener("DOMContentLoaded", () => {
   bookingForm?.addEventListener("submit", async event => {
     event.preventDefault();
 
-    if (!bookingForm.reportValidity()) return;
-
-    if (!bookingMessage) return;
+    if (!bookingForm.reportValidity() || !bookingMessage) return;
 
     const formData = new FormData(bookingForm);
+    const getValue = key => String(formData.get(key) || "").trim();
+
+    const venue = getValue("venue") === "Other"
+      ? getValue("customVenue")
+      : getValue("venue");
+
+    const theme = getValue("theme") === "Other"
+      ? getValue("customTheme")
+      : getValue("theme");
+
+    const menu = getValue("menu") === "Other"
+      ? getValue("customMenu")
+      : getValue("menu");
 
     const booking = {
-      name: formData.get("name")?.trim(),
-      email: formData.get("email")?.trim(),
-      eventType: formData.get("eventType"),
-      venue:
-        formData.get("venue") === "Other"
-          ? formData.get("customVenue")?.trim()
-          : formData.get("venue"),
-      theme:
-        formData.get("theme") === "Other"
-          ? formData.get("customTheme")?.trim()
-          : formData.get("theme"),
-      menu:
-        formData.get("menu") === "Other"
-          ? formData.get("customMenu")?.trim()
-          : formData.get("menu"),
-      date: formData.get("date"),
-      guests: Number(formData.get("guests")),
-      package: formData.get("package"),
-      notes: formData.get("notes")?.trim() || ""
+      name: getValue("name"),
+      email: getValue("email"),
+      event: getValue("eventType"),
+      eventType: getValue("eventType"),
+      venue,
+      theme,
+      menu,
+      date: getValue("date"),
+      guests: Number(getValue("guests")),
+      package: getValue("package"),
+      notes: getValue("notes")
     };
 
-    const today = new Date();
-    const localToday = [
-      today.getFullYear(),
-      String(today.getMonth() + 1).padStart(2, "0"),
-      String(today.getDate()).padStart(2, "0")
-    ].join("-");
-
-    if (booking.date < localToday) {
-      bookingMessage.textContent =
-        "Please select today or a future date.";
+    if (!booking.name || !booking.email || !booking.event || !booking.date) {
+      bookingMessage.textContent = "Please complete all required fields.";
       return;
     }
 
-    const submitButton = bookingForm.querySelector(
+    if (!Number.isFinite(booking.guests) || booking.guests < 1) {
+      bookingMessage.textContent = "Please enter a valid guest count.";
+      return;
+    }
+
+    const now = new Date();
+    const today = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0")
+    ].join("-");
+
+    if (booking.date < today) {
+      bookingMessage.textContent = "Please select today or a future date.";
+      return;
+    }
+
+    const button = bookingForm.querySelector(
       'button[type="submit"], input[type="submit"]'
     );
 
-    if (submitButton) submitButton.disabled = true;
-
+    if (button) button.disabled = true;
     bookingMessage.textContent = "Submitting your booking...";
 
     try {
@@ -185,10 +178,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const reference =
-        result.booking?.id || result.booking?._id || "Received";
+        result.booking?.id ||
+        result.booking?._id ||
+        result.bookingId ||
+        "Received";
 
       bookingMessage.textContent =
-        `Booking request saved successfully! Reference: ${reference}`;
+        `Booking submitted successfully! Reference: ${reference}`;
 
       bookingForm.reset();
 
@@ -208,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       bookingMessage.textContent = error.message;
     } finally {
-      if (submitButton) submitButton.disabled = false;
+      if (button) button.disabled = false;
     }
   });
 
@@ -216,24 +212,28 @@ document.addEventListener("DOMContentLoaded", () => {
   contactForm?.addEventListener("submit", async event => {
     event.preventDefault();
 
-    if (!contactForm.reportValidity()) return;
-    if (!contactMessage) return;
+    if (!contactForm.reportValidity() || !contactMessage) return;
 
     const formData = new FormData(contactForm);
+    const getValue = key => String(formData.get(key) || "").trim();
 
     const message = {
-      name: formData.get("name")?.trim(),
-      email: formData.get("email")?.trim(),
-      subject: formData.get("subject")?.trim(),
-      message: formData.get("message")?.trim()
+      name: getValue("name"),
+      email: getValue("email"),
+      subject: getValue("subject"),
+      message: getValue("message")
     };
 
-    const submitButton = contactForm.querySelector(
+    if (!message.name || !message.email || !message.message) {
+      contactMessage.textContent = "Please complete all required fields.";
+      return;
+    }
+
+    const button = contactForm.querySelector(
       'button[type="submit"], input[type="submit"]'
     );
 
-    if (submitButton) submitButton.disabled = true;
-
+    if (button) button.disabled = true;
     contactMessage.textContent = "Sending your message...";
 
     try {
@@ -249,7 +249,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       contactMessage.textContent = error.message;
     } finally {
-      if (submitButton) submitButton.disabled = false;
+      if (button) button.disabled = false;
     }
   });
 });
+
