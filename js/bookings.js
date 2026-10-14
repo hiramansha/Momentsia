@@ -4,6 +4,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const contactForm = document.getElementById("contact-form");
   const contactMessage = document.getElementById("form-message");
 
+  // API URL: live website uses the same origin.
+  // Local development and Codespaces remain supported.
+  const hostname = window.location.hostname;
+
+  const API_BASE_URL =
+    hostname === "localhost" || hostname === "127.0.0.1"
+      ? "http://localhost:5000"
+      : hostname.endsWith(".app.github.dev")
+        ? `${window.location.protocol}//${hostname.replace(
+            /-\d+\.app\.github\.dev$/,
+            "-5000.app.github.dev"
+          )}`
+        : "";
+
   function readSavedItems(key) {
     try {
       const value = JSON.parse(localStorage.getItem(key) || "[]");
@@ -20,19 +34,20 @@ document.addEventListener("DOMContentLoaded", () => {
     ["booking-menu", "booking-menu-other", "customMenu"]
   ];
 
-  customFields.forEach(([selectId, inputId, fieldName]) => {
+  customFields.forEach(([selectId, inputId]) => {
     const select = document.getElementById(selectId);
     const input = document.getElementById(inputId);
     const wrapper = document.getElementById(`${inputId}-wrapper`);
 
     if (!select || !input || !wrapper) return;
 
-    const updateCustomField = () => {
+    function updateCustomField() {
       const show = select.value === "Other";
       wrapper.hidden = !show;
       input.required = show;
+
       if (!show) input.value = "";
-    };
+    }
 
     select.addEventListener("change", updateCustomField);
     updateCustomField();
@@ -66,62 +81,114 @@ document.addEventListener("DOMContentLoaded", () => {
 
   packageSelect?.addEventListener("change", updateEstimatedCost);
   guestCountInput?.addEventListener("input", updateEstimatedCost);
+  updateEstimatedCost();
 
+  // Safely handle JSON and unexpected server responses.
+  async function apiRequest(path, options = {}) {
+    let response;
 
-  // Backend URL for GitHub Codespaces or local development
-  const API_BASE_URL = window.location.hostname.endsWith(".app.github.dev")
-    ? window.location.protocol + "//" +
-      window.location.hostname.replace(/-\d+\.app\.github\.dev$/, "-5000.app.github.dev")
-    : "http://localhost:5000";
+    try {
+      response = await fetch(`${API_BASE_URL}${path}`, {
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...options.headers
+        }
+      });
+    } catch {
+      throw new Error(
+        "Cannot connect to the backend. The API may not be deployed yet."
+      );
+    }
 
-  // BOOKING FORM: SAVE TO MONGODB
+    const contentType = response.headers.get("content-type") || "";
+    let result;
+
+    if (contentType.includes("application/json")) {
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error("The server returned invalid JSON.");
+      }
+    } else {
+      throw new Error(
+        `Server error (${response.status}). The API route may not be configured.`
+      );
+    }
+
+    if (!response.ok || !result.success) {
+      throw new Error(
+        result.message || `Request failed (${response.status}).`
+      );
+    }
+
+    return result;
+  }
+
+  // BOOKING FORM
   bookingForm?.addEventListener("submit", async event => {
     event.preventDefault();
 
     if (!bookingForm.reportValidity()) return;
 
+    if (!bookingMessage) return;
+
     const formData = new FormData(bookingForm);
+
     const booking = {
       name: formData.get("name")?.trim(),
       email: formData.get("email")?.trim(),
       eventType: formData.get("eventType"),
-      venue: formData.get("venue") === "Other"
-        ? formData.get("customVenue")?.trim()
-        : formData.get("venue"),
-      theme: formData.get("theme") === "Other"
-        ? formData.get("customTheme")?.trim()
-        : formData.get("theme"),
-      menu: formData.get("menu") === "Other"
-        ? formData.get("customMenu")?.trim()
-        : formData.get("menu"),
+      venue:
+        formData.get("venue") === "Other"
+          ? formData.get("customVenue")?.trim()
+          : formData.get("venue"),
+      theme:
+        formData.get("theme") === "Other"
+          ? formData.get("customTheme")?.trim()
+          : formData.get("theme"),
+      menu:
+        formData.get("menu") === "Other"
+          ? formData.get("customMenu")?.trim()
+          : formData.get("menu"),
       date: formData.get("date"),
       guests: Number(formData.get("guests")),
       package: formData.get("package"),
       notes: formData.get("notes")?.trim() || ""
     };
 
-    if (booking.date < new Date().toISOString().slice(0, 10)) {
-      bookingMessage.textContent = "Please select today or a future date.";
+    const today = new Date();
+    const localToday = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, "0"),
+      String(today.getDate()).padStart(2, "0")
+    ].join("-");
+
+    if (booking.date < localToday) {
+      bookingMessage.textContent =
+        "Please select today or a future date.";
       return;
     }
+
+    const submitButton = bookingForm.querySelector(
+      'button[type="submit"], input[type="submit"]'
+    );
+
+    if (submitButton) submitButton.disabled = true;
 
     bookingMessage.textContent = "Submitting your booking...";
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/bookings`, {
+      const result = await apiRequest("/api/bookings", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(booking)
       });
 
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Unable to submit booking.");
-      }
+      const reference =
+        result.booking?.id || result.booking?._id || "Received";
 
       bookingMessage.textContent =
-        `Booking request saved successfully! Reference: ${result.booking.id}`;
+        `Booking request saved successfully! Reference: ${reference}`;
 
       bookingForm.reset();
 
@@ -139,18 +206,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       updateEstimatedCost();
     } catch (error) {
-      bookingMessage.textContent =
-        error.message || "Unable to connect to the server. Please try again.";
+      bookingMessage.textContent = error.message;
+    } finally {
+      if (submitButton) submitButton.disabled = false;
     }
   });
 
-  // CONTACT FORM: SAVE TO MONGODB
+  // CONTACT FORM
   contactForm?.addEventListener("submit", async event => {
     event.preventDefault();
 
     if (!contactForm.reportValidity()) return;
+    if (!contactMessage) return;
 
     const formData = new FormData(contactForm);
+
     const message = {
       name: formData.get("name")?.trim(),
       email: formData.get("email")?.trim(),
@@ -158,26 +228,28 @@ document.addEventListener("DOMContentLoaded", () => {
       message: formData.get("message")?.trim()
     };
 
+    const submitButton = contactForm.querySelector(
+      'button[type="submit"], input[type="submit"]'
+    );
+
+    if (submitButton) submitButton.disabled = true;
+
     contactMessage.textContent = "Sending your message...";
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/contact`, {
+      const result = await apiRequest("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(message)
       });
 
-      const result = await response.json();
+      contactMessage.textContent =
+        result.message || "Your message was sent successfully.";
 
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Unable to send message.");
-      }
-
-      contactMessage.textContent = result.message;
       contactForm.reset();
     } catch (error) {
-      contactMessage.textContent =
-        error.message || "Unable to connect to the server. Please try again.";
+      contactMessage.textContent = error.message;
+    } finally {
+      if (submitButton) submitButton.disabled = false;
     }
   });
 });
