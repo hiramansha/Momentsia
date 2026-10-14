@@ -11,6 +11,47 @@ app.use(cors());
 app.use(express.json({ limit: "20kb" }));
 
 let db;
+// Admin login
+app.post("/api/admin/login", async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    if (!process.env.ADMIN_PASSWORD || !process.env.JWT_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: "Admin login is not configured on the server."
+      });
+    }
+
+    if (
+      typeof password !== "string" ||
+      password !== process.env.ADMIN_PASSWORD
+    ) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid admin password."
+      });
+    }
+
+    const token = jwt.sign(
+      { role: "admin" },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.json({
+      success: true,
+      message: "Admin login successful.",
+      token
+    });
+  } catch (error) {
+    console.error("Admin login error:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Unable to log in."
+    });
+  }
+});
 
 app.get("/", (req, res) => {
   res.json({
