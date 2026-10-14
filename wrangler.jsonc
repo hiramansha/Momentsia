@@ -9,5 +9,12 @@
     "directory": "./",
     "binding": "ASSETS",
     "run_worker_first": ["/api/*"]
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "momentsia-db",
+      "database_id": "YOUR_ACTUAL_D1_DATABASE_ID"
+    }
+  ]
 }
