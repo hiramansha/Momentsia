@@ -9,12 +9,5 @@
     "directory": "./",
     "binding": "ASSETS",
     "run_worker_first": ["/api/*"]
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "momentsia-db",
-      "database_id": "23fbd9cc-870c-4ccd-9532-2a9aa2e3242b"
-    }
-  ]
+  }
 }
