@@ -1,0 +1,12 @@
+<escape>{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "momentsia",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-14",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  }
+}</escape>
