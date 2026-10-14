@@ -1,66 +1,147 @@
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization"
+};
+
+function respond(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json; charset=utf-8"
+    }
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const path = url.pathname;
     const method = request.method;
 
-    const json = (data, status = 200) =>
-      new Response(JSON.stringify(data), {
-        status,
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization"
-        }
-      });
-
     if (method === "OPTIONS") {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization"
-        }
-      });
+      return new Response(null, { status: 204, headers: corsHeaders });
     }
 
-    if (path === "/") {
-      return json({
+    if (path === "/" && method === "GET") {
+      return respond({
         success: true,
         message: "Momentsia Backend is running!"
       });
     }
 
-    if (path === "/api/health") {
-      return json({
+    if (path === "/api/health" && method === "GET") {
+      return respond({
         success: true,
         api: "healthy",
-        database: env.MONGODB_DATA_API_URL ? "configured" : "not_configured"
+        database: env.DB ? "configured" : "not_configured"
       });
     }
 
-    if (path === "/api/admin/login" && method === "POST") {
-      return json({
-        success: false,
-        message: "Admin login is not configured yet. Complete the secure authentication setup first."
-      }, 503);
+    if (path === "/api/bookings" && method === "POST") {
+      let booking;
+
+      try {
+        booking = await request.json();
+      } catch {
+        return respond({ success: false, message: "Invalid JSON." }, 400);
+      }
+
+      const name = String(booking.name || "").trim();
+      const email = String(booking.email || "").trim();
+      const event = String(
+        booking.event || booking.eventName || ""
+      ).trim();
+      const date = String(booking.date || "").trim();
+
+      if (!name || !email || !event || !date) {
+        return respond({
+          success: false,
+          message: "Name, email, event and date are required."
+        }, 400);
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return respond({
+          success: false,
+          message: "Please enter a valid email address."
+        }, 400);
+      }
+
+      if (!env.DB) {
+        return respond({
+          success: false,
+          message: "Database is not configured. Set up a Cloudflare D1 database first."
+        }, 503);
+      }
+
+      try {
+        const result = await env.DB.prepare(
+          `INSERT INTO bookings (name, email, event, event_date, created_at)
+           VALUES (?, ?, ?, ?, datetime('now'))`
+        ).bind(name, email, event, date).run();
+
+        return respond({
+          success: true,
+          message: "Booking submitted successfully.",
+          bookingId: result.meta?.last_row_id
+        }, 201);
+      } catch {
+        return respond({
+          success: false,
+          message: "Could not save booking. Check the database table setup."
+        }, 500);
+      }
     }
 
-    if (
-      path.startsWith("/api/bookings") ||
-      path === "/api/contact"
-    ) {
-      return json({
-        success: false,
-        message: "Database API is not configured yet."
-      }, 503);
+    if (path === "/api/contact" && method === "POST") {
+      let contact;
+
+      try {
+        contact = await request.json();
+      } catch {
+        return respond({ success: false, message: "Invalid JSON." }, 400);
+      }
+
+      const name = String(contact.name || "").trim();
+      const email = String(contact.email || "").trim();
+      const message = String(contact.message || "").trim();
+
+      if (!name || !email || !message) {
+        return respond({
+          success: false,
+          message: "Name, email and message are required."
+        }, 400);
+      }
+
+      if (!env.DB) {
+        return respond({
+          success: false,
+          message: "Database is not configured."
+        }, 503);
+      }
+
+      try {
+        await env.DB.prepare(
+          `INSERT INTO contacts (name, email, message, created_at)
+           VALUES (?, ?, ?, datetime('now'))`
+        ).bind(name, email, message).run();
+
+        return respond({
+          success: true,
+          message: "Your message has been received."
+        }, 201);
+      } catch {
+        return respond({
+          success: false,
+          message: "Could not save your message."
+        }, 500);
+      }
     }
 
-    return json({
-      success: false,
-      message: "API route not found."
-    }, 404);
+    return respond({ success: false, message: "API route not found." }, 404);
   }
 };
+
