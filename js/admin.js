@@ -1,3 +1,4 @@
+
 (() => {
   "use strict";
 
@@ -22,17 +23,26 @@
   }
 
   async function apiRequest(path, options = {}) {
+    const token = window.MomentsiaAuth?.getToken();
+
+    const headers = {
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options.headers
+    };
+
     const response = await fetch(`${API_BASE_URL}${path}`, {
       ...options,
-      headers: {
-        ...(options.body ? { "Content-Type": "application/json" } : {}),
-        ...options.headers
-      }
+      headers
     });
 
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || data.success === false) {
+      if (response.status === 401 || response.status === 403) {
+        window.MomentsiaAuth?.logout();
+      }
+
       throw new Error(data.message || `Request failed (${response.status})`);
     }
 
@@ -41,8 +51,10 @@
 
   function showError(containerId, message) {
     const container = $(containerId);
+
     if (container) {
-      container.innerHTML = `<p role="alert">${escapeHTML(message)}</p>`;
+      container.textContent = message;
+      container.setAttribute("role", "alert");
     }
   }
 
@@ -70,44 +82,75 @@
     const list = $("admin-bookings-list");
     if (!list) return;
 
-    const count = (status) => bookings.filter(
-      (booking) => String(booking.status || "Pending").toLowerCase() === status.toLowerCase()
-    ).length;
+    const getStatus = (booking) => {
+      const status = String(booking.status || "Pending");
+      return ["Pending", "Confirmed", "Cancelled"].includes(status)
+        ? status
+        : "Pending";
+    };
 
-    if ($("admin-total-bookings")) $("admin-total-bookings").textContent = bookings.length;
-    if ($("admin-pending-bookings")) $("admin-pending-bookings").textContent = count("Pending");
-    if ($("admin-confirmed-bookings")) $("admin-confirmed-bookings").textContent = count("Confirmed");
-    if ($("admin-cancelled-bookings")) $("admin-cancelled-bookings").textContent = count("Cancelled");
+    const count = (status) =>
+      bookings.filter((booking) => getStatus(booking) === status).length;
 
-    const query = ($("admin-booking-search")?.value || "").trim().toLowerCase();
-    const selectedStatus = ($("admin-status-filter")?.value || "all").toLowerCase();
+    if ($("admin-total-bookings")) {
+      $("admin-total-bookings").textContent = bookings.length;
+    }
+
+    if ($("admin-pending-bookings")) {
+      $("admin-pending-bookings").textContent = count("Pending");
+    }
+
+    if ($("admin-confirmed-bookings")) {
+      $("admin-confirmed-bookings").textContent = count("Confirmed");
+    }
+
+    if ($("admin-cancelled-bookings")) {
+      $("admin-cancelled-bookings").textContent = count("Cancelled");
+    }
+
+    const query = ($("admin-booking-search")?.value || "")
+      .trim()
+      .toLowerCase();
+
+    const selectedStatus = ($("admin-status-filter")?.value || "all")
+      .toLowerCase();
 
     const filtered = bookings.filter((booking) => {
-      const status = String(booking.status || "Pending").toLowerCase();
+      const status = getStatus(booking).toLowerCase();
+
       const searchable = [
-        booking.id, booking.name, booking.email, booking.eventType,
-        booking.venue, booking.date, booking.status
+        booking.id,
+        booking.name,
+        booking.email,
+        booking.eventType,
+        booking.venue,
+        booking.date,
+        status
       ].join(" ").toLowerCase();
 
-      return (selectedStatus === "all" || status === selectedStatus)
-        && searchable.includes(query);
+      return (
+        (selectedStatus === "all" || status === selectedStatus) &&
+        searchable.includes(query)
+      );
     });
 
     if (!filtered.length) {
-      list.innerHTML = `<p>${bookings.length
-        ? "No bookings match your search."
-        : "No bookings found in the database yet."}</p>`;
+      list.innerHTML = `<p>${
+        bookings.length
+          ? "No bookings match your search."
+          : "No bookings found in the database yet."
+      }</p>`;
       return;
     }
 
     list.innerHTML = filtered.map((booking) => {
-      const status = ["Pending", "Confirmed", "Cancelled"].includes(booking.status)
-        ? booking.status : "Pending";
+      const status = getStatus(booking);
+      const id = escapeHTML(booking.id);
 
       return `
         <article class="admin-booking-card">
           <h3>${escapeHTML(booking.eventType || "Event Booking")}</h3>
-          <p><strong>Reference:</strong> ${escapeHTML(booking.id)}</p>
+          <p><strong>Reference:</strong> ${id}</p>
           <p><strong>Customer:</strong> ${escapeHTML(booking.name)}</p>
           <p><strong>Email:</strong> ${escapeHTML(booking.email)}</p>
           <p><strong>Venue:</strong> ${escapeHTML(booking.venue)}</p>
@@ -117,22 +160,30 @@
           <p><strong>Guests:</strong> ${escapeHTML(booking.guests)}</p>
           <p><strong>Package:</strong> ${escapeHTML(booking.package || "Not selected")}</p>
           <p><strong>Estimated Cost:</strong> ${
-            booking.estimatedCost
+            Number.isFinite(Number(booking.estimatedCost)) &&
+            booking.estimatedCost !== "" &&
+            booking.estimatedCost != null
               ? "PKR " + Number(booking.estimatedCost).toLocaleString("en-PK")
               : "Not available"
           }</p>
           <p><strong>Notes:</strong> ${escapeHTML(booking.notes || "None")}</p>
           <p><strong>Status:</strong> ${escapeHTML(status)}</p>
+
           <div class="admin-booking-actions">
-            <label>Update status
-              <select data-status-id="${escapeHTML(booking.id)}">
+            <label>
+              Update status
+              <select data-status-id="${id}">
                 <option value="Pending" ${status === "Pending" ? "selected" : ""}>Pending</option>
                 <option value="Confirmed" ${status === "Confirmed" ? "selected" : ""}>Confirmed</option>
                 <option value="Cancelled" ${status === "Cancelled" ? "selected" : ""}>Cancelled</option>
               </select>
             </label>
-            <button type="button" class="btn admin-delete-button"
-              data-delete-id="${escapeHTML(booking.id)}">Delete Booking</button>
+
+            <button
+              type="button"
+              class="btn admin-delete-button"
+              data-delete-id="${id}"
+            >Delete Booking</button>
           </div>
         </article>
       `;
@@ -141,10 +192,18 @@
 
   async function loadData() {
     if (loading) return;
+
+    if (!window.MomentsiaAuth?.getToken()) {
+      showError("admin-bookings-list", "Please sign in to load bookings.");
+      showError("admin-messages-list", "Please sign in to load messages.");
+      return;
+    }
+
     loading = true;
 
     const bookingList = $("admin-bookings-list");
     const messageList = $("admin-messages-list");
+
     if (bookingList) bookingList.innerHTML = "<p>Loading bookings...</p>";
     if (messageList) messageList.innerHTML = "<p>Loading messages...</p>";
 
@@ -154,29 +213,50 @@
         apiRequest("/api/contact")
       ]);
 
-      bookings = Array.isArray(bookingData.bookings) ? bookingData.bookings : [];
-      messages = Array.isArray(messageData.messages) ? messageData.messages : [];
+      bookings = Array.isArray(bookingData.bookings)
+        ? bookingData.bookings
+        : [];
+
+      messages = Array.isArray(messageData.messages)
+        ? messageData.messages
+        : [];
 
       renderDashboard();
       renderMessages();
     } catch (error) {
-      showError("admin-bookings-list", `Could not load bookings: ${error.message}`);
-      showError("admin-messages-list", `Could not load messages: ${error.message}`);
+      showError(
+        "admin-bookings-list",
+        `Could not load bookings: ${error.message}`
+      );
+
+      showError(
+        "admin-messages-list",
+        `Could not load messages: ${error.message}`
+      );
     } finally {
       loading = false;
     }
   }
 
   async function updateStatus(select) {
+    if (!window.MomentsiaAuth?.getToken()) {
+      alert("Please sign in again.");
+      return;
+    }
+
     const id = select.dataset.statusId;
     const newStatus = select.value;
+
     select.disabled = true;
 
     try {
-      await apiRequest(`/api/bookings/${encodeURIComponent(id)}/status`, {
-        method: "PATCH",
-        body: JSON.stringify({ status: newStatus })
-      });
+      await apiRequest(
+        `/api/bookings/${encodeURIComponent(id)}/status`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({ status: newStatus })
+        }
+      );
 
       await loadData();
     } catch (error) {
@@ -188,15 +268,25 @@
   }
 
   async function deleteBooking(button) {
+    if (!window.MomentsiaAuth?.getToken()) {
+      alert("Please sign in again.");
+      return;
+    }
+
     const id = button.dataset.deleteId;
-    if (!confirm("Are you sure you want to delete this booking?")) return;
+
+    if (!confirm("Are you sure you want to delete this booking?")) {
+      return;
+    }
 
     button.disabled = true;
 
     try {
-      await apiRequest(`/api/bookings/${encodeURIComponent(id)}`, {
-        method: "DELETE"
-      });
+      await apiRequest(
+        `/api/bookings/${encodeURIComponent(id)}`,
+        { method: "DELETE" }
+      );
+
       await loadData();
     } catch (error) {
       alert(`Booking could not be deleted: ${error.message}`);
@@ -205,21 +295,43 @@
   }
 
   function exportBookings() {
-    const blob = new Blob([JSON.stringify(bookings, null, 2)], {
-      type: "application/json"
-    });
+    if (!window.MomentsiaAuth?.getToken()) {
+      alert("Please sign in to export bookings.");
+      return;
+    }
+
+    const blob = new Blob(
+      [JSON.stringify(bookings, null, 2)],
+      { type: "application/json" }
+    );
+
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
+
     link.href = url;
     link.download = "momentsia-bookings.json";
+    document.body.appendChild(link);
     link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    link.remove();
+
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    $("admin-booking-search")?.addEventListener("input", renderDashboard);
-    $("admin-status-filter")?.addEventListener("change", renderDashboard);
-    $("admin-export-bookings")?.addEventListener("click", exportBookings);
+    $("admin-booking-search")?.addEventListener(
+      "input",
+      renderDashboard
+    );
+
+    $("admin-status-filter")?.addEventListener(
+      "change",
+      renderDashboard
+    );
+
+    $("admin-export-bookings")?.addEventListener(
+      "click",
+      exportBookings
+    );
 
     $("admin-bookings-list")?.addEventListener("change", (event) => {
       const select = event.target.closest("select[data-status-id]");
@@ -230,8 +342,6 @@
       const button = event.target.closest("button[data-delete-id]");
       if (button) deleteBooking(button);
     });
-
-    loadData();
   });
 
   window.MomentsiaAdmin = {
@@ -242,4 +352,7 @@
     renderMessages,
     loadData
   };
+
+  // Compatibility with the login handler in app.js.
+  window.loadAdminDashboard = loadData;
 })();
