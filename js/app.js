@@ -1,4 +1,37 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Admin login form
+  const adminLoginForm = document.getElementById("admin-login-form");
+  const adminLoginPanel = document.getElementById("admin-login-panel");
+  const adminDashboardContent = document.getElementById("admin-dashboard-content");
+  const adminPassword = document.getElementById("admin-password");
+  const adminLoginMessage = document.getElementById("admin-login-message");
+
+  adminLoginForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (adminLoginMessage) {
+      adminLoginMessage.textContent = "Signing in...";
+    }
+
+    try {
+      await window.MomentsiaAuth.login(adminPassword.value);
+
+      adminLoginForm.reset();
+
+      if (adminLoginPanel) adminLoginPanel.hidden = true;
+      if (adminDashboardContent) adminDashboardContent.hidden = false;
+      if (adminLoginMessage) adminLoginMessage.textContent = "";
+
+      // Load the dashboard after successful login.
+      if (typeof window.loadAdminDashboard === "function") {
+        await window.loadAdminDashboard();
+      }
+    } catch (error) {
+      if (adminLoginMessage) {
+        adminLoginMessage.textContent = error.message || "Login failed.";
+      }
+    }
+  });
   const welcome = document.getElementById("welcome-screen");
   const exploreButton = document.getElementById("welcome-explore");
   const menuButton = document.getElementById("menu-toggle");
