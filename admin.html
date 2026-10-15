@@ -2,628 +2,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Momentsia</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #f8f0e5;
-      --card: #fffdf9;
-      --ink: #512b3a;
-      --muted: #82736e;
-      --accent: #bd9877;
-      --line: #eadfd2;
-      --green: #27734b;
-      --red: #b34141;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: "DM Sans", sans-serif;
-    }
-
-    button, input { font: inherit; }
-    button { cursor: pointer; }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 22px 6%;
-      border-bottom: 1px solid var(--line);
-      background: var(--card);
-    }
-
-    .brand {
-      font-family: "Playfair Display", serif;
-      font-size: 30px;
-      font-weight: 700;
-    }
-
-    .brand small {
-      display: block;
-      margin-top: 4px;
-      font-family: "DM Sans", sans-serif;
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .topbar a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    main {
-      width: min(1200px, 92%);
-      margin: 42px auto;
-    }
-
-    .intro { margin-bottom: 26px; }
-
-    .eyebrow {
-      color: var(--accent);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    h1, h2 { font-family: "Playfair Display", serif; }
-    h1 { font-size: clamp(32px, 5vw, 48px); margin: 10px 0; }
-    h2 { margin: 0; font-size: 27px; }
-
-    .intro p, .intro-text {
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .panel {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 8px 28px rgba(65, 42, 24, .04);
-    }
-
-    .login-panel { max-width: 520px; }
-
-    label {
-      display: block;
-      font-weight: 600;
-      margin: 14px 0 8px;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background: white;
-      outline-color: var(--accent);
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 9px;
-      padding: 12px 18px;
-      background: var(--ink);
-      color: white;
-      font-weight: 600;
-    }
-
-    .btn:hover { background: #795064; }
-    .btn-light { background: #efe4d8; color: var(--ink); }
-
-    .login-panel .btn {
-      width: 100%;
-      margin-top: 18px;
-    }
-
-    .notice {
-      margin-top: 14px;
-      font-size: 13px;
-      line-height: 1.7;
-      overflow-wrap: anywhere;
-    }
-
-    .error { color: var(--red); }
-    .success { color: var(--green); }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin: 24px 0;
-    }
-
-    .stat {
-      background: var(--card);
-      padding: 22px;
-      border: 1px solid var(--line);
-      border-radius: 15px;
-    }
-
-    .stat span { color: var(--muted); font-size: 13px; }
-    .stat strong { display: block; font-size: 32px; margin-top: 10px; }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .table-wrap { overflow-x: auto; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 720px;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 14px 12px;
-      border-bottom: 1px solid var(--line);
-      vertical-align: top;
-      font-size: 13px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    th {
-      color: var(--muted);
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    td strong { font-size: 14px; }
-    .empty { color: var(--muted); padding: 22px 0; }
-    .hidden { display: none !important; }
-
-    .footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      padding: 18px;
-    }
-
-    @media (max-width: 650px) {
-      .topbar { padding: 18px 5%; }
-      .brand { font-size: 24px; }
-      main { margin: 26px auto; }
-      .panel { padding: 18px; }
-      .stats { grid-template-columns: 1fr; }
-      .stat { padding: 17px; }
-      .stat strong { font-size: 27px; }
-      .section-head .btn { margin-top: 6px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Momentsia | Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f8f0e5;--card:#fffdf9;--ink:#512b3a;--muted:#82736e;--accent:#bd9877;--line:#eadfd2;--green:#27734b;--red:#b34141}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+header{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:22px 6%;background:var(--card);border-bottom:1px solid var(--line)}
+.brand{font:700 30px "Playfair Display",serif}
+.brand small{display:block;margin-top:5px;font:10px "DM Sans",sans-serif;letter-spacing:3px;text-transform:uppercase;color:var(--accent)}
+header a{color:var(--accent);text-decoration:none;font-weight:700}
+main{width:min(1200px,92%);margin:40px auto}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent)}
+h1,h2{font-family:"Playfair Display",serif}
+h1{font-size:clamp(32px,5vw,48px);margin:10px 0}
+h2{font-size:26px;margin:0}
+p{line-height:1.7;color:var(--muted)}
+.panel,.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 8px 28px #412a1808}
+.login-panel{max-width:520px}
+label{display:block;margin:15px 0 8px;font-weight:600}
+input{width:100%;padding:13px;border:1px solid var(--line);border-radius:9px;outline-color:var(--accent)}
+.btn{border:0;border-radius:9px;padding:12px 17px;background:var(--ink);color:white;font-weight:600}
+.btn:hover{background:#795064}
+.btn-light{background:#efe4d8;color:var(--ink)}
+.login-panel .btn{width:100%;margin-top:18px}
+.notice{font-size:13px;line-height:1.7;overflow-wrap:anywhere}
+.error{color:var(--red)}.success{color:var(--green)}
+.hidden{display:none!important}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:24px 0}
+.stat{margin:0}.stat span{color:var(--muted);font-size:13px}.stat strong{display:block;font-size:32px;margin-top:10px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.table-wrap{overflow-x:auto}
+table{width:100%;min-width:700px;border-collapse:collapse}
+th,td{padding:13px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+th{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.empty{color:var(--muted)}footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
+@media(max-width:650px){header{padding:18px 5%}.brand{font-size:24px}main{margin:25px auto}.panel{padding:17px}.stats{grid-template-columns:1fr}.stat strong{font-size:27px}}
+</style>
 </head>
-
 <body>
-  <header class="topbar">
-    <div class="brand">
-      Momentsia
-      <small>Admin Dashboard · By Hira Mansha</small>
+<header>
+  <div class="brand">Momentsia<small>Admin Dashboard · By Hira Mansha</small></div>
+  <a href="index.html">← Main Website</a>
+</header>
+
+<main>
+  <div style="margin-bottom:25px">
+    <span class="eyebrow">Management Portal</span>
+    <h1>Welcome, Admin.</h1>
+    <p>Manage event bookings and customer messages in one place.</p>
+  </div>
+
+  <section id="login-panel" class="panel login-panel">
+    <h2>Secure Login</h2>
+    <p>Enter your Cloudflare admin token to continue.</p>
+    <form id="login-form">
+      <label for="admin-token">Admin Token</label>
+      <input id="admin-token" type="password" autocomplete="current-password" placeholder="Enter ADMIN_TOKEN" required>
+      <button id="login-btn" class="btn" type="submit">Access Dashboard</button>
+    </form>
+    <p id="login-notice" class="notice" role="status" aria-live="polite"></p>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="section-head">
+      <div><span class="eyebrow">Overview</span><h2>Your Events at a Glance</h2></div>
+      <div><button id="refresh-btn" class="btn btn-light">Refresh</button> <button id="logout-btn" class="btn">Log Out</button></div>
     </div>
-    <a href="index.html">← Main Website</a>
-  </header>
 
-  <main>
-    <section class="intro">
-      <span class="eyebrow">Management Portal</span>
-      <h1>Welcome, Admin.</h1>
-      <p>Manage event bookings and review customer messages in one place.</p>
-    </section>
+    <div class="stats">
+      <div class="stat"><span>Total Bookings</span><strong id="booking-count">0</strong></div>
+      <div class="stat"><span>Contact Messages</span><strong id="contact-count">0</strong></div>
+      <div class="stat"><span>Events in Bookings</span><strong id="event-count">0</strong></div>
+    </div>
 
-    <section id="login-panel" class="panel login-panel">
-      <h2>Secure Login</h2>
-      <p class="intro-text">Enter your admin token to load dashboard data.</p>
-
-      <form id="login-form">
-        <label for="admin-token">Admin Token</label>
-        <input
-          id="admin-token"
-          type="password"
-          autocomplete="current-password"
-          placeholder="Enter your Cloudflare ADMIN_TOKEN"
-          required
-        >
-        <button id="login-btn" class="btn" type="submit">
-          Access Dashboard
-        </button>
-      </form>
-
-      <p id="login-notice" class="notice" role="status" aria-live="polite"></p>
-    </section>
-
-    <section id="dashboard" class="hidden">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">Overview</span>
-          <h2>Your Events at a Glance</h2>
-        </div>
-
-        <div>
-          <button id="refresh-btn" class="btn btn-light" type="button">
-            Refresh
-          </button>
-          <button id="logout-btn" class="btn" type="button">
-            Log Out
-          </button>
-        </div>
+    <section class="panel">
+      <div class="section-head"><h2>Event Bookings</h2><span id="booking-status" class="notice"></span></div>
+      <div class="table-wrap">
+        <table><thead><tr><th>Customer</th><th>Event &amp; Date</th><th>Venue</th><th>Guests</th><th>Package</th><th>Theme &amp; Menu</th><th>Notes</th></tr></thead><tbody id="bookings-body"></tbody></table>
       </div>
-
-      <div class="stats">
-        <div class="stat">
-          <span>Total Bookings</span>
-          <strong id="booking-count">—</strong>
-        </div>
-        <div class="stat">
-          <span>Contact Messages</span>
-          <strong id="contact-count">—</strong>
-        </div>
-        <div class="stat">
-          <span>Events Listed in Bookings</span>
-          <strong id="event-count">—</strong>
-        </div>
-      </div>
-
-      <section class="panel">
-        <div class="section-head">
-          <h2>Event Bookings</h2>
-          <span id="booking-status" class="notice" role="status"></span>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Customer</th>
-                <th>Event &amp; Date</th>
-                <th>Venue</th>
-                <th>Guests</th>
-                <th>Package</th>
-                <th>Theme &amp; Menu</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody id="bookings-body"></tbody>
-          </table>
-        </div>
-
-        <p id="booking-empty" class="empty hidden">No bookings found.</p>
-      </section>
-
-      <section class="panel">
-        <div class="section-head">
-          <h2>Contact Messages</h2>
-          <span id="contact-status" class="notice" role="status"></span>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Sender</th>
-                <th>Subject</th>
-                <th>Message</th>
-                <th>Received</th>
-              </tr>
-            </thead>
-            <tbody id="contacts-body"></tbody>
-          </table>
-        </div>
-
-        <p id="contact-empty" class="empty hidden">No contact messages found.</p>
-      </section>
+      <p id="booking-empty" class="empty hidden">No bookings found.</p>
     </section>
-  </main>
 
-  <footer class="footer">
-    © 2026 Momentsia by Hira Mansha. All rights reserved.
-  </footer>
+    <section class="panel">
+      <div class="section-head"><h2>Contact Messages</h2><span id="contact-status" class="notice"></span></div>
+      <div class="table-wrap">
+        <table><thead><tr><th>Sender</th><th>Subject</th><th>Message</th><th>Received</th></tr></thead><tbody id="contacts-body"></tbody></table>
+      </div>
+      <p id="contact-empty" class="empty hidden">No contact messages found.</p>
+    </section>
+  </section>
+</main>
+<footer>© 2026 Momentsia by Hira Mansha. All rights reserved.</footer>
 
-  <script>
-    const API_BASE = "https://momentsia.23-st-028.workers.dev";
+<script>
+const API_BASE = "https://momentsia.23-st-028.workers.dev";
+const $ = id => document.getElementById(id);
 
-    const loginPanel = document.getElementById("login-panel");
-    const dashboard = document.getElementById("dashboard");
-    const loginForm = document.getElementById("login-form");
-    const loginNotice = document.getElementById("login-notice");
-    const tokenInput = document.getElementById("admin-token");
-    const loginButton = document.getElementById("login-btn");
+let adminToken = "";
+let loading = false;
 
-    let adminToken = "";
-    let isLoading = false;
+function notice(id, message, type=""){
+  $(id).textContent = message;
+  $(id).className = "notice " + type;
+}
 
-    function setNotice(element, message, type = "") {
-      element.textContent = message;
-      element.className = "notice " + type;
-    }
+function cell(row, value){
+  const td = document.createElement("td");
+  td.textContent = value == null || value === "" ? "—" : String(value);
+  row.appendChild(td);
+}
 
-    function addCell(row, value, strong = false) {
-      const cell = document.createElement("td");
-      const content = value == null || value === ""
-        ? "—"
-        : String(value);
+async function adminGet(endpoint){
+  const url = API_BASE + endpoint;
+  let response;
 
-      if (strong) {
-        const bold = document.createElement("strong");
-        bold.textContent = content;
-        cell.appendChild(bold);
-      } else {
-        cell.textContent = content;
-      }
-
-      row.appendChild(cell);
-    }
-
-    async function adminGet(endpoint) {
-      const apiUrl = API_BASE + endpoint;
-      let response;
-
-      try {
-        response = await fetch(apiUrl, {
-          method: "GET",
-          headers: {
-            "Authorization": "Bearer " + adminToken,
-            "Accept": "application/json"
-          },
-          cache: "no-store"
-        });
-      } catch (error) {
-        throw new Error(
-          "Could not connect to the API. Check your internet connection and Cloudflare CORS settings. Details: " +
-          (error.message || "Network error")
-        );
-      }
-
-      const contentType = response.headers.get("content-type") || "";
-      const responseText = await response.text();
-
-      let data;
-
-      try {
-        data = JSON.parse(responseText);
-      } catch (error) {
-        const preview = responseText
-          .slice(0, 160)
-          .replace(/\s+/g, " ");
-
-        throw new Error(
-          "The API returned HTML or invalid JSON. Endpoint: " +
-          endpoint +
-          " | HTTP status: " +
-          response.status +
-          " | Response: " +
-          preview +
-          ". Check the Cloudflare Worker route and deployment."
-        );
-      }
-
-      if (!contentType.toLowerCase().includes("application/json")) {
-        throw new Error(
-          "The API response is not marked as JSON. Endpoint: " +
-          endpoint +
-          " | HTTP status: " +
-          response.status
-        );
-      }
-
-      if (response.status === 401 || response.status === 403) {
-        throw new Error(
-          "Admin authentication failed. Check the ADMIN_TOKEN secret in Cloudflare and enter the matching token."
-        );
-      }
-
-      if (!response.ok || data.success !== true) {
-        throw new Error(
-          data.message ||
-          "The API request failed. HTTP status: " + response.status
-        );
-      }
-
-      return data;
-    }
-
-    function renderBookings(bookings) {
-      const body = document.getElementById("bookings-body");
-      body.replaceChildren();
-
-      document.getElementById("booking-count").textContent = bookings.length;
-
-      document.getElementById("event-count").textContent =
-        new Set(bookings.map(booking => booking.event).filter(Boolean)).size;
-
-      document.getElementById("booking-empty")
-        .classList.toggle("hidden", bookings.length > 0);
-
-      bookings.forEach(booking => {
-        const row = document.createElement("tr");
-
-        const customer = document.createElement("td");
-        const name = document.createElement("strong");
-        name.textContent = booking.name || "—";
-
-        const email = document.createElement("div");
-        email.textContent = booking.email || "—";
-
-        customer.append(name, email);
-        row.appendChild(customer);
-
-        addCell(
-          row,
-          (booking.event || "—") + " · " + (booking.event_date || "—")
-        );
-        addCell(row, booking.venue);
-        addCell(row, booking.guests);
-        addCell(row, booking.package);
-
-        const themeMenu = document.createElement("td");
-        const theme = document.createElement("div");
-        theme.textContent = "Theme: " + (booking.theme || "—");
-
-        const menu = document.createElement("div");
-        menu.textContent = "Menu: " + (booking.menu || "—");
-
-        themeMenu.append(theme, menu);
-        row.appendChild(themeMenu);
-
-        addCell(row, booking.notes);
-        body.appendChild(row);
-      });
-    }
-
-    function renderContacts(contacts) {
-      const body = document.getElementById("contacts-body");
-      body.replaceChildren();
-
-      document.getElementById("contact-count").textContent = contacts.length;
-
-      document.getElementById("contact-empty")
-        .classList.toggle("hidden", contacts.length > 0);
-
-      contacts.forEach(contact => {
-        const row = document.createElement("tr");
-
-        const sender = document.createElement("td");
-        const name = document.createElement("strong");
-        name.textContent = contact.name || "—";
-
-        const email = document.createElement("div");
-        email.textContent = contact.email || "—";
-
-        sender.append(name, email);
-        row.appendChild(sender);
-
-        addCell(row, contact.subject);
-        addCell(row, contact.message);
-        addCell(row, contact.created_at);
-
-        body.appendChild(row);
-      });
-    }
-
-    async function loadDashboard() {
-      if (isLoading) return;
-
-      isLoading = true;
-
-      setNotice(document.getElementById("booking-status"), "Loading…");
-      setNotice(document.getElementById("contact-status"), "Loading…");
-      setNotice(loginNotice, "Connecting to Momentsia API…");
-
-      loginButton.disabled = true;
-      loginButton.textContent = "Please wait…";
-
-      try {
-        const [bookingData, contactData] = await Promise.all([
-          adminGet("/api/admin/bookings"),
-          adminGet("/api/admin/contacts")
-        ]);
-
-        const bookings = Array.isArray(bookingData.bookings)
-          ? bookingData.bookings
-          : [];
-
-        const contacts = Array.isArray(contactData.contacts)
-          ? contactData.contacts
-          : [];
-
-        renderBookings(bookings);
-        renderContacts(contacts);
-
-        setNotice(
-          document.getElementById("booking-status"),
-          "Updated successfully.",
-          "success"
-        );
-
-        setNotice(
-          document.getElementById("contact-status"),
-          "Updated successfully.",
-          "success"
-        );
-
-        loginPanel.classList.add("hidden");
-        dashboard.classList.remove("hidden");
-      } catch (error) {
-        const message = error.message || "An unexpected error occurred.";
-
-        if (/authentication failed|unauthorized|invalid admin token/i.test(message)) {
-          dashboard.classList.add("hidden");
-          loginPanel.classList.remove("hidden");
-          setNotice(loginNotice, message, "error");
-        } else {
-          setNotice(loginNotice, message, "error");
-          setNotice(
-            document.getElementById("booking-status"),
-            message,
-            "error"
-          );
-          setNotice(
-            document.getElementById("contact-status"),
-            message,
-            "error"
-          );
-        }
-      } finally {
-        isLoading = false;
-        loginButton.disabled = false;
-        loginButton.textContent = "Access Dashboard";
-      }
-    }
-
-    loginForm.addEventListener("submit", async event => {
-      event.preventDefault();
-
-      adminToken = tokenInput.value.trim();
-
-      if (!adminToken) {
-        setNotice(loginNotice, "Please enter your admin token.", "error");
-        return;
-      }
-
-      await loadDashboard();
-
-      if (!dashboard.classList.contains("hidden")) {
-        tokenInput.value = "";
-        setNotice(loginNotice, "");
-      }
+  try{
+    response = await fetch(url,{
+      method:"GET",
+      headers:{
+        "Authorization":"Bearer " + adminToken,
+        "Accept":"application/json"
+      },
+      cache:"no-store"
     });
+  }catch(error){
+    throw new Error("API connection failed. Check internet and Cloudflare CORS settings. " + error.message);
+  }
 
-    document.getElementById("refresh-btn").addEventListener("click", () => {
-      loadDashboard();
-    });
+  const text = await response.text();
+  let data;
 
-    document.getElementById("logout-btn").addEventListener("click", () => {
-      adminToken = "";
-      tokenInput.value = "";
+  try{
+    data = JSON.parse(text);
+  }catch{
+    throw new Error(
+      "API returned HTML instead of JSON. Endpoint: " + endpoint +
+      " | HTTP " + response.status +
+      " | Response: " + text.slice(0,120).replace(/\s+/g," ")
+    );
+  }
 
-      dashboard.classList.add("hidden");
-      loginPanel.classList.remove("hidden");
+  if(response.status === 401 || response.status === 403){
+    throw new Error("Unauthorized: ADMIN_TOKEN does not match the Cloudflare Worker secret.");
+  }
 
-      setNotice(loginNotice, "You have been logged out.", "success");
-    });
-  </script>
+  if(!response.ok || data.success !== true){
+    throw new Error(data.message || "Request failed. HTTP " + response.status);
+  }
+
+  return data;
+}
+
+function renderBookings(items){
+  const body = $("bookings-body");
+  body.replaceChildren();
+  $("booking-count").textContent = items.length;
+  $("event-count").textContent = new Set(items.map(x=>x.event).filter(Boolean)).size;
+  $("booking-empty").classList.toggle("hidden",items.length>0);
+
+  items.forEach(item=>{
+    const row = document.createElement("tr");
+    const customer = document.createElement("td");
+    const name = document.createElement("strong");
+    name.textContent = item.name || "—";
+    const email = document.createElement("div");
+    email.textContent = item.email || "—";
+    customer.append(name,email);
+    row.appendChild(customer);
+    cell(row,(item.event || "—") + " · " + (item.event_date || "—"));
+    cell(row,item.venue);
+    cell(row,item.guests);
+    cell(row,item.package);
+    cell(row,"Theme: " + (item.theme || "—") + " | Menu: " + (item.menu || "—"));
+    cell(row,item.notes);
+    body.appendChild(row);
+  });
+}
+
+function renderContacts(items){
+  const body = $("contacts-body");
+  body.replaceChildren();
+  $("contact-count").textContent = items.length;
+  $("contact-empty").classList.toggle("hidden",items.length>0);
+
+  items.forEach(item=>{
+    const row = document.createElement("tr");
+    const sender = document.createElement("td");
+    const name = document.createElement("strong");
+    name.textContent = item.name || "—";
+    const email = document.createElement("div");
+    email.textContent = item.email || "—";
+    sender.append(name,email);
+    row.appendChild(sender);
+    cell(row,item.subject);
+    cell(row,item.message);
+    cell(row,item.created_at);
+    body.appendChild(row);
+  });
+}
+
+async function loadDashboard(){
+  if(loading) return;
+  loading = true;
+  $("login-btn").disabled = true;
+  $("login-btn").textContent = "Please wait…";
+  notice("login-notice","Connecting to Momentsia API…");
+  notice("booking-status","Loading…");
+  notice("contact-status","Loading…");
+
+  try{
+    const [bookingData,contactData] = await Promise.all([
+      adminGet("/api/admin/bookings"),
+      adminGet("/api/admin/contacts")
+    ]);
+
+    const bookings = Array.isArray(bookingData.bookings) ? bookingData.bookings : [];
+    const contacts = Array.isArray(contactData.contacts) ? contactData.contacts : [];
+
+    renderBookings(bookings);
+    renderContacts(contacts);
+    notice("booking-status","Updated successfully.","success");
+    notice("contact-status","Updated successfully.","success");
+    $("login-panel").classList.add("hidden");
+    $("dashboard").classList.remove("hidden");
+    $("admin-token").value = "";
+  }catch(error){
+    notice("login-notice",error.message || "Something went wrong.","error");
+    $("dashboard").classList.add("hidden");
+    $("login-panel").classList.remove("hidden");
+  }finally{
+    loading = false;
+    $("login-btn").disabled = false;
+    $("login-btn").textContent = "Access Dashboard";
+  }
+}
+
+$("login-form").addEventListener("submit",async event=>{
+  event.preventDefault();
+  adminToken = $("admin-token").value.trim();
+  if(!adminToken){
+    notice("login-notice","Please enter your admin token.","error");
+    return;
+  }
+  await loadDashboard();
+});
+
+$("refresh-btn").addEventListener("click",loadDashboard);
+
+$("logout-btn").addEventListener("click",()=>{
+  adminToken = "";
+  $("admin-token").value = "";
+  $("dashboard").classList.add("hidden");
+  $("login-panel").classList.remove("hidden");
+  notice("login-notice","You have logged out.","success");
+});
+</script>
 </body>
 </html>
 
