@@ -2,9 +2,9 @@
 (() => {
   "use strict";
 
-  const API_BASE_URL = window.location.hostname.endsWith(".app.github.dev")
-    ? `${window.location.protocol}//${window.location.hostname.replace(/-\d+\.app\.github\.dev$/, "-5000.app.github.dev")}`
-    : "http://localhost:5000";
+  // Momentsia Cloudflare Worker API
+  const API_BASE_URL =
+    "https://momentsia.23-st-028.workers.dev";
 
   let bookings = [];
   let messages = [];
@@ -26,8 +26,12 @@
     const token = window.MomentsiaAuth?.getToken();
 
     const headers = {
-      ...(options.body ? { "Content-Type": "application/json" } : {}),
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(options.body
+        ? { "Content-Type": "application/json" }
+        : {}),
+      ...(token
+        ? { Authorization: `Bearer ${token}` }
+        : {}),
       ...options.headers
     };
 
@@ -36,14 +40,31 @@
       headers
     });
 
-    const data = await response.json().catch(() => ({}));
+    const contentType =
+      response.headers.get("content-type") || "";
+
+    let data;
+
+    if (contentType.includes("application/json")) {
+      data = await response.json();
+    } else {
+      const responseText = await response.text();
+
+      throw new Error(
+        response.ok
+          ? "The server returned an unexpected response. Check the API endpoint."
+          : `Server request failed (${response.status}). Check the API endpoint.`
+      );
+    }
 
     if (!response.ok || data.success === false) {
       if (response.status === 401 || response.status === 403) {
         window.MomentsiaAuth?.logout();
       }
 
-      throw new Error(data.message || `Request failed (${response.status})`);
+      throw new Error(
+        data.message || `Request failed (${response.status})`
+      );
     }
 
     return data;
@@ -84,6 +105,7 @@
 
     const getStatus = (booking) => {
       const status = String(booking.status || "Pending");
+
       return ["Pending", "Confirmed", "Cancelled"].includes(status)
         ? status
         : "Pending";
@@ -209,8 +231,8 @@
 
     try {
       const [bookingData, messageData] = await Promise.all([
-        apiRequest("/api/bookings"),
-        apiRequest("/api/contact")
+        apiRequest("/api/admin/bookings"),
+        apiRequest("/api/admin/contacts")
       ]);
 
       bookings = Array.isArray(bookingData.bookings)
@@ -251,7 +273,7 @@
 
     try {
       await apiRequest(
-        `/api/bookings/${encodeURIComponent(id)}/status`,
+        `/api/admin/bookings/${encodeURIComponent(id)}/status`,
         {
           method: "PATCH",
           body: JSON.stringify({ status: newStatus })
@@ -283,7 +305,7 @@
 
     try {
       await apiRequest(
-        `/api/bookings/${encodeURIComponent(id)}`,
+        `/api/admin/bookings/${encodeURIComponent(id)}`,
         { method: "DELETE" }
       );
 
@@ -310,6 +332,7 @@
 
     link.href = url;
     link.download = "momentsia-bookings.json";
+
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -353,6 +376,6 @@
     loadData
   };
 
-  // Compatibility with the login handler in app.js.
+  // Compatibility with app.js login handler.
   window.loadAdminDashboard = loadData;
 })();
