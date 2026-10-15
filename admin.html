@@ -1,24 +1,28 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Momentsia</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --bg: #f8f0e5;
       --card: #fffdf9;
-      --ink: #30251f;
-      --muted: #8a7b70;
-      --accent: #956b50;
+      --ink: #512b3a;
+      --muted: #82736e;
+      --accent: #bd9877;
       --line: #eadfd2;
       --green: #27734b;
       --red: #b34141;
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       background: var(--bg);
@@ -36,34 +40,38 @@
       gap: 16px;
       padding: 22px 6%;
       border-bottom: 1px solid var(--line);
-      background: rgba(255,253,249,.8);
+      background: var(--card);
     }
 
     .brand {
       font-family: "Playfair Display", serif;
-      font-size: 27px;
+      font-size: 30px;
       font-weight: 700;
     }
 
     .brand small {
       display: block;
-      margin-top: 2px;
+      margin-top: 4px;
       font-family: "DM Sans", sans-serif;
       font-size: 10px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--accent);
     }
 
     .topbar a {
       color: var(--accent);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    main { width: min(1200px, 92%); margin: 38px auto; }
+    main {
+      width: min(1200px, 92%);
+      margin: 42px auto;
+    }
 
     .intro { margin-bottom: 26px; }
+
     .eyebrow {
       color: var(--accent);
       font-size: 11px;
@@ -74,7 +82,12 @@
 
     h1, h2 { font-family: "Playfair Display", serif; }
     h1 { font-size: clamp(32px, 5vw, 48px); margin: 10px 0; }
-    .intro p { color: var(--muted); margin: 0; line-height: 1.7; }
+    h2 { margin: 0; font-size: 27px; }
+
+    .intro p, .intro-text {
+      color: var(--muted);
+      line-height: 1.7;
+    }
 
     .panel {
       background: var(--card);
@@ -82,11 +95,17 @@
       border-radius: 18px;
       padding: 24px;
       margin-bottom: 24px;
-      box-shadow: 0 8px 28px rgba(65,42,24,.04);
+      box-shadow: 0 8px 28px rgba(65, 42, 24, .04);
     }
 
     .login-panel { max-width: 520px; }
-    label { display: block; font-weight: 600; margin: 14px 0 8px; }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin: 14px 0 8px;
+    }
+
     input {
       width: 100%;
       padding: 13px 14px;
@@ -105,11 +124,21 @@
       font-weight: 600;
     }
 
-    .btn:hover { background: var(--accent); }
+    .btn:hover { background: #795064; }
     .btn-light { background: #efe4d8; color: var(--ink); }
-    .login-panel .btn { width: 100%; margin-top: 18px; }
 
-    .notice { margin-top: 14px; font-size: 13px; line-height: 1.6; }
+    .login-panel .btn {
+      width: 100%;
+      margin-top: 18px;
+    }
+
+    .notice {
+      margin-top: 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
     .error { color: var(--red); }
     .success { color: var(--green); }
 
@@ -139,9 +168,14 @@
       margin-bottom: 18px;
     }
 
-    h2 { margin: 0; font-size: 27px; }
     .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
     th, td {
       text-align: left;
       padding: 14px 12px;
@@ -149,6 +183,7 @@
       vertical-align: top;
       font-size: 13px;
       line-height: 1.6;
+      overflow-wrap: anywhere;
     }
 
     th {
@@ -161,23 +196,32 @@
     td strong { font-size: 14px; }
     .empty { color: var(--muted); padding: 22px 0; }
     .hidden { display: none !important; }
-    .footer { text-align: center; color: var(--muted); font-size: 12px; padding: 18px; }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 18px;
+    }
 
     @media (max-width: 650px) {
       .topbar { padding: 18px 5%; }
+      .brand { font-size: 24px; }
       main { margin: 26px auto; }
       .panel { padding: 18px; }
       .stats { grid-template-columns: 1fr; }
       .stat { padding: 17px; }
       .stat strong { font-size: 27px; }
+      .section-head .btn { margin-top: 6px; }
     }
   </style>
 </head>
+
 <body>
   <header class="topbar">
     <div class="brand">
       Momentsia
-      <small>Admin dashboard · By Hira Mansha</small>
+      <small>Admin Dashboard · By Hira Mansha</small>
     </div>
     <a href="index.html">← Main Website</a>
   </header>
@@ -192,13 +236,22 @@
     <section id="login-panel" class="panel login-panel">
       <h2>Secure Login</h2>
       <p class="intro-text">Enter your admin token to load dashboard data.</p>
+
       <form id="login-form">
         <label for="admin-token">Admin Token</label>
-        <input id="admin-token" type="password" autocomplete="current-password"
-          placeholder="Enter your Cloudflare ADMIN_TOKEN" required>
-        <button class="btn" type="submit">Access Dashboard</button>
+        <input
+          id="admin-token"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Enter your Cloudflare ADMIN_TOKEN"
+          required
+        >
+        <button id="login-btn" class="btn" type="submit">
+          Access Dashboard
+        </button>
       </form>
-      <p id="login-notice" class="notice" role="status"></p>
+
+      <p id="login-notice" class="notice" role="status" aria-live="polite"></p>
     </section>
 
     <section id="dashboard" class="hidden">
@@ -207,16 +260,30 @@
           <span class="eyebrow">Overview</span>
           <h2>Your Events at a Glance</h2>
         </div>
+
         <div>
-          <button id="refresh-btn" class="btn btn-light" type="button">Refresh</button>
-          <button id="logout-btn" class="btn" type="button">Log Out</button>
+          <button id="refresh-btn" class="btn btn-light" type="button">
+            Refresh
+          </button>
+          <button id="logout-btn" class="btn" type="button">
+            Log Out
+          </button>
         </div>
       </div>
 
       <div class="stats">
-        <div class="stat"><span>Total Bookings</span><strong id="booking-count">—</strong></div>
-        <div class="stat"><span>Contact Messages</span><strong id="contact-count">—</strong></div>
-        <div class="stat"><span>Events Listed in Bookings</span><strong id="event-count">—</strong></div>
+        <div class="stat">
+          <span>Total Bookings</span>
+          <strong id="booking-count">—</strong>
+        </div>
+        <div class="stat">
+          <span>Contact Messages</span>
+          <strong id="contact-count">—</strong>
+        </div>
+        <div class="stat">
+          <span>Events Listed in Bookings</span>
+          <strong id="event-count">—</strong>
+        </div>
       </div>
 
       <section class="panel">
@@ -224,17 +291,24 @@
           <h2>Event Bookings</h2>
           <span id="booking-status" class="notice" role="status"></span>
         </div>
+
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Customer</th><th>Event & Date</th><th>Venue</th>
-                <th>Guests</th><th>Package</th><th>Theme & Menu</th><th>Notes</th>
+                <th>Customer</th>
+                <th>Event &amp; Date</th>
+                <th>Venue</th>
+                <th>Guests</th>
+                <th>Package</th>
+                <th>Theme &amp; Menu</th>
+                <th>Notes</th>
               </tr>
             </thead>
             <tbody id="bookings-body"></tbody>
           </table>
         </div>
+
         <p id="booking-empty" class="empty hidden">No bookings found.</p>
       </section>
 
@@ -243,20 +317,29 @@
           <h2>Contact Messages</h2>
           <span id="contact-status" class="notice" role="status"></span>
         </div>
+
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Sender</th><th>Subject</th><th>Message</th><th>Received</th></tr>
+              <tr>
+                <th>Sender</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Received</th>
+              </tr>
             </thead>
             <tbody id="contacts-body"></tbody>
           </table>
         </div>
+
         <p id="contact-empty" class="empty hidden">No contact messages found.</p>
       </section>
     </section>
   </main>
 
-  <footer class="footer">© 2026 Momentsia by Hira Mansha. All rights reserved.</footer>
+  <footer class="footer">
+    © 2026 Momentsia by Hira Mansha. All rights reserved.
+  </footer>
 
   <script>
     const API_BASE = "https://momentsia.23-st-028.workers.dev";
@@ -266,8 +349,10 @@
     const loginForm = document.getElementById("login-form");
     const loginNotice = document.getElementById("login-notice");
     const tokenInput = document.getElementById("admin-token");
+    const loginButton = document.getElementById("login-btn");
 
     let adminToken = "";
+    let isLoading = false;
 
     function setNotice(element, message, type = "") {
       element.textContent = message;
@@ -276,7 +361,10 @@
 
     function addCell(row, value, strong = false) {
       const cell = document.createElement("td");
-      const content = value == null || value === "" ? "—" : String(value);
+      const content = value == null || value === ""
+        ? "—"
+        : String(value);
+
       if (strong) {
         const bold = document.createElement("strong");
         bold.textContent = content;
@@ -284,28 +372,75 @@
       } else {
         cell.textContent = content;
       }
+
       row.appendChild(cell);
     }
 
     async function adminGet(endpoint) {
-      const response = await fetch(API_BASE + endpoint, {
-        method: "GET",
-        headers: { "Authorization": "Bearer " + adminToken }
-      });
+      const apiUrl = API_BASE + endpoint;
+      let response;
+
+      try {
+        response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer " + adminToken,
+            "Accept": "application/json"
+          },
+          cache: "no-store"
+        });
+      } catch (error) {
+        throw new Error(
+          "Could not connect to the API. Check your internet connection and Cloudflare CORS settings. Details: " +
+          (error.message || "Network error")
+        );
+      }
+
+      const contentType = response.headers.get("content-type") || "";
+      const responseText = await response.text();
 
       let data;
+
       try {
-        data = await response.json();
-      } catch {
-        throw new Error("Server returned an invalid response.");
+        data = JSON.parse(responseText);
+      } catch (error) {
+        const preview = responseText
+          .slice(0, 160)
+          .replace(/\s+/g, " ");
+
+        throw new Error(
+          "The API returned HTML or invalid JSON. Endpoint: " +
+          endpoint +
+          " | HTTP status: " +
+          response.status +
+          " | Response: " +
+          preview +
+          ". Check the Cloudflare Worker route and deployment."
+        );
       }
 
-      if (!response.ok || !data.success) {
-        if (response.status === 401) {
-          throw new Error("Invalid admin token. Please check it and try again.");
-        }
-        throw new Error(data.message || "Could not load dashboard data.");
+      if (!contentType.toLowerCase().includes("application/json")) {
+        throw new Error(
+          "The API response is not marked as JSON. Endpoint: " +
+          endpoint +
+          " | HTTP status: " +
+          response.status
+        );
       }
+
+      if (response.status === 401 || response.status === 403) {
+        throw new Error(
+          "Admin authentication failed. Check the ADMIN_TOKEN secret in Cloudflare and enter the matching token."
+        );
+      }
+
+      if (!response.ok || data.success !== true) {
+        throw new Error(
+          data.message ||
+          "The API request failed. HTTP status: " + response.status
+        );
+      }
+
       return data;
     }
 
@@ -314,22 +449,30 @@
       body.replaceChildren();
 
       document.getElementById("booking-count").textContent = bookings.length;
-      document.getElementById("event-count").textContent =
-        new Set(bookings.map(b => b.event).filter(Boolean)).size;
 
-      document.getElementById("booking-empty").classList.toggle("hidden", bookings.length > 0);
+      document.getElementById("event-count").textContent =
+        new Set(bookings.map(booking => booking.event).filter(Boolean)).size;
+
+      document.getElementById("booking-empty")
+        .classList.toggle("hidden", bookings.length > 0);
 
       bookings.forEach(booking => {
         const row = document.createElement("tr");
+
         const customer = document.createElement("td");
         const name = document.createElement("strong");
         name.textContent = booking.name || "—";
+
         const email = document.createElement("div");
         email.textContent = booking.email || "—";
+
         customer.append(name, email);
         row.appendChild(customer);
 
-        addCell(row, `${booking.event || "—"} · ${booking.event_date || "—"}`);
+        addCell(
+          row,
+          (booking.event || "—") + " · " + (booking.event_date || "—")
+        );
         addCell(row, booking.venue);
         addCell(row, booking.guests);
         addCell(row, booking.package);
@@ -337,8 +480,10 @@
         const themeMenu = document.createElement("td");
         const theme = document.createElement("div");
         theme.textContent = "Theme: " + (booking.theme || "—");
+
         const menu = document.createElement("div");
         menu.textContent = "Menu: " + (booking.menu || "—");
+
         themeMenu.append(theme, menu);
         row.appendChild(themeMenu);
 
@@ -350,29 +495,44 @@
     function renderContacts(contacts) {
       const body = document.getElementById("contacts-body");
       body.replaceChildren();
+
       document.getElementById("contact-count").textContent = contacts.length;
-      document.getElementById("contact-empty").classList.toggle("hidden", contacts.length > 0);
+
+      document.getElementById("contact-empty")
+        .classList.toggle("hidden", contacts.length > 0);
 
       contacts.forEach(contact => {
         const row = document.createElement("tr");
+
         const sender = document.createElement("td");
         const name = document.createElement("strong");
         name.textContent = contact.name || "—";
+
         const email = document.createElement("div");
         email.textContent = contact.email || "—";
+
         sender.append(name, email);
         row.appendChild(sender);
 
         addCell(row, contact.subject);
         addCell(row, contact.message);
         addCell(row, contact.created_at);
+
         body.appendChild(row);
       });
     }
 
     async function loadDashboard() {
+      if (isLoading) return;
+
+      isLoading = true;
+
       setNotice(document.getElementById("booking-status"), "Loading…");
       setNotice(document.getElementById("contact-status"), "Loading…");
+      setNotice(loginNotice, "Connecting to Momentsia API…");
+
+      loginButton.disabled = true;
+      loginButton.textContent = "Please wait…";
 
       try {
         const [bookingData, contactData] = await Promise.all([
@@ -380,48 +540,90 @@
           adminGet("/api/admin/contacts")
         ]);
 
-        renderBookings(bookingData.bookings || []);
-        renderContacts(contactData.contacts || []);
+        const bookings = Array.isArray(bookingData.bookings)
+          ? bookingData.bookings
+          : [];
 
-        setNotice(document.getElementById("booking-status"), "Updated successfully.", "success");
-        setNotice(document.getElementById("contact-status"), "Updated successfully.", "success");
+        const contacts = Array.isArray(contactData.contacts)
+          ? contactData.contacts
+          : [];
+
+        renderBookings(bookings);
+        renderContacts(contacts);
+
+        setNotice(
+          document.getElementById("booking-status"),
+          "Updated successfully.",
+          "success"
+        );
+
+        setNotice(
+          document.getElementById("contact-status"),
+          "Updated successfully.",
+          "success"
+        );
+
         loginPanel.classList.add("hidden");
         dashboard.classList.remove("hidden");
       } catch (error) {
-        if (/Invalid admin token|Unauthorized/i.test(error.message)) {
+        const message = error.message || "An unexpected error occurred.";
+
+        if (/authentication failed|unauthorized|invalid admin token/i.test(message)) {
           dashboard.classList.add("hidden");
           loginPanel.classList.remove("hidden");
-          setNotice(loginNotice, error.message, "error");
-          tokenInput.focus();
+          setNotice(loginNotice, message, "error");
         } else {
-          setNotice(document.getElementById("booking-status"), error.message, "error");
-          setNotice(document.getElementById("contact-status"), error.message, "error");
+          setNotice(loginNotice, message, "error");
+          setNotice(
+            document.getElementById("booking-status"),
+            message,
+            "error"
+          );
+          setNotice(
+            document.getElementById("contact-status"),
+            message,
+            "error"
+          );
         }
+      } finally {
+        isLoading = false;
+        loginButton.disabled = false;
+        loginButton.textContent = "Access Dashboard";
       }
     }
 
     loginForm.addEventListener("submit", async event => {
       event.preventDefault();
-      adminToken = tokenInput.value.trim();
-      if (!adminToken) return;
 
-      setNotice(loginNotice, "Checking credentials…");
+      adminToken = tokenInput.value.trim();
+
+      if (!adminToken) {
+        setNotice(loginNotice, "Please enter your admin token.", "error");
+        return;
+      }
+
       await loadDashboard();
+
       if (!dashboard.classList.contains("hidden")) {
         tokenInput.value = "";
         setNotice(loginNotice, "");
       }
     });
 
-    document.getElementById("refresh-btn").addEventListener("click", loadDashboard);
+    document.getElementById("refresh-btn").addEventListener("click", () => {
+      loadDashboard();
+    });
 
     document.getElementById("logout-btn").addEventListener("click", () => {
       adminToken = "";
       tokenInput.value = "";
+
       dashboard.classList.add("hidden");
       loginPanel.classList.remove("hidden");
+
       setNotice(loginNotice, "You have been logged out.", "success");
     });
   </script>
 </body>
 </html>
+
